@@ -1,0 +1,19 @@
+﻿@using Kentico.PageBuilder.Web.Mvc
+
+@model ComponentViewModel<MVC.Models.Widgets.Content.DrivingDirection.DrivingDirectionProperties>
+
+<div class="col-6 col-lg-3" @(Context.Kentico().PageBuilder().EditMode ? Html.Raw("style=\"max-width: 100%;\"") : Html.Raw(""))>
+    <h5>@Model.Properties.Heading</h5>
+    @if (Context.Kentico().PageBuilder().EditMode)
+    {
+        <div style="border: solid; box-sizing: border-box; padding: 10px; border-color: black; margin-bottom: 50px;">
+            @{ Html.Kentico().RichTextEditor(nameof(Model.Properties.Content)); }
+        </div>            
+    }
+    else
+    {
+        <div class="fr-view">
+            @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.Content))
+        </div>
+    }
+</div>

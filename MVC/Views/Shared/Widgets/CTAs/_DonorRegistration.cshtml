@@ -1,0 +1,88 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.CTA.DonorRegistration.DonorRegistrationProperties>
+
+@inject XperienceAdapter.Repositories.IMediaFileRepository MediaFileRespository
+
+@{
+    string targetOne = (Model.Properties.OpenNewTabOne) ? "_blank" : "_self";
+
+    var imageOne = "";
+    if ((Model?.Properties?.ImageOne?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.ImageOne.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            imageOne = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+
+    string targetTwo = (Model.Properties.OpenNewTabTwo) ? "_blank" : "_self";
+
+    var imageTwo = "";
+    if ((Model?.Properties?.ImageTwo?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.ImageTwo.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            imageTwo = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+
+    string targetThree = (Model.Properties.OpenNewTabThree) ? "_blank" : "_self";
+
+    var imageThree = "";
+    if ((Model?.Properties?.ImageThree?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.ImageThree.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            imageThree = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+
+    string targetFour = (Model.Properties.OpenNewTabFour) ? "_blank" : "_self";
+
+    var imageFour = "";
+    if ((Model?.Properties?.ImageFour?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.ImageFour.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            imageFour = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+
+}
+
+<div class="widget-wrapper">
+    <section class="donor-registration-section" aria-label="donor registration section">
+        <div class="container">
+            <h5>@Model.Properties.Heading</h5>
+            <div class="donor-list">
+                <div class="donor">
+                    <a href="@Model.Properties.UrlOne" aria-label="@Model.Properties.AriaLabelOne" target="@targetOne">
+                        <img class="" data-src="@imageOne" alt="@Model.Properties.ImageAltTextOne" data-srcset="@imageOne" src="@imageOne" srcset="@imageOne">
+                    </a>
+                </div>
+                <div class="donor">
+                    <a href="@Model.Properties.UrlTwo" aria-label="@Model.Properties.AriaLabelTwo" target="@targetTwo">
+                        <img class="" data-src="@imageTwo" alt="@Model.Properties.ImageAltTextTwo" data-srcset="@imageTwo" src="@imageTwo" srcset="@imageTwo">
+                    </a>
+                </div>
+                <div class="donor">
+                    <a href="@Model.Properties.UrlThree" aria-label="@Model.Properties.AriaLabelThree" target="@targetThree">
+                        <img class="" data-src="@imageThree" alt="@Model.Properties.ImageAltTextThree" data-srcset="@imageThree" src="@imageThree" srcset="@imageThree">
+                    </a>
+                </div>
+                <div class="donor">
+                    <a href="@Model.Properties.UrlFour" aria-label="@Model.Properties.AriaLabelFour" target="@targetFour">
+                        <img class="" data-src="@imageFour" alt="@Model.Properties.ImageAltTextFour" data-srcset="@imageFour" src="@imageFour" srcset="@imageFour">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

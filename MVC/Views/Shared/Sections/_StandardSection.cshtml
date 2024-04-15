@@ -1,0 +1,12 @@
+﻿@model ComponentViewModel<MVC.Models.Sections.StandardSection.StandardSectionProperties>
+
+@{
+    var widgetWhitelist = new[]
+    {
+        "UMCHospital.Widgets.Breadcrumbs", "UMCHospital.Widgets.FeaturedContent", "UMCHospital.Widgets.FeaturedStatistics", "UMCHospital.Widgets.DonorRegistration", "UMCHospital.Widgets.ImageCallout",
+        "UMCHospital.Widgets.FormattedRichText", "UMCHospital.Widgets.Hero", "UMCHospital.Widgets.Locations", "UMCHospital.Widgets.InteriorNavigation", "UMCHospital.Widgets.LatestNews", "UMCHospital.Widgets.ServiceListing",
+        "UMCHospital.Widgets.Search", "UMCHospital.Widgets.TeamMembers", "Kentico.FormWidget", "UMCHospital.Widgets.EventSearch", "UMCHospital.Widgets.VideoHero", "UMCHospital.Widgets.NewsListingProperties"
+    };
+ }
+                
+@await Html.Kentico().WidgetZoneAsync(allowedWidgets: widgetWhitelist)

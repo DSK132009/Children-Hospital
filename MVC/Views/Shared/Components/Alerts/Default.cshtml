@@ -1,0 +1,21 @@
+﻿@using Alerts;
+
+@model List<AlertInfo>
+
+@{
+    var activeAlerts = Model.Where(x => x.AlertEnabled);
+}
+
+@if (activeAlerts.Count() > 0)
+{
+<div class="widget-wrapper">
+    <section class="generic-alert">
+        @foreach (var alert in activeAlerts)
+        {
+            <div class="container-fluid">
+                @Html.Raw(alert.AlertText)
+            </div>
+        }
+    </section>
+</div>
+}

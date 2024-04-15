@@ -1,0 +1,13 @@
+﻿@using Kentico.Forms.Web.Mvc
+@using Kentico.Web.Mvc
+
+@model FormSectionViewModel<MVC.Models.FormSections.TwoColumnSection.TwoColumnSectionProperties>
+
+<div class="form-row">
+    <div class="form-group col-lg-@Model.Properties.Columnl1Length">
+        @await Html.Kentico().FormZoneAsync()
+    </div>
+    <div class="form-group col-lg-@Model.Properties.Column2Length">
+        @await Html.Kentico().FormZoneAsync()
+    </div>
+</div>

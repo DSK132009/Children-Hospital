@@ -1,0 +1,35 @@
+.popular-search-list {
+    margin-top: -75px;
+
+    @include media-breakpoint-down(lg) {
+        margin-top: -25px;
+    }
+
+    .title {
+        @include font-size(18);
+        @include line-height(21);
+        color: $primary;
+        font-weight: 700;
+        border-bottom: 3px solid $tertiary;
+        padding-bottom: 3px;
+        margin-bottom: 11px;
+        width: 65%;
+    }
+
+    ul {
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        max-height: 111px;
+        height: 111px;
+
+        li, li a {
+            @include font-size(16);
+            @include line-height(32);
+            color: $primary;
+            text-decoration: underline;
+        }
+    }
+}

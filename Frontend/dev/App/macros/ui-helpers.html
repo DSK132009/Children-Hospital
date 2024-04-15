@@ -1,0 +1,8 @@
+{% macro IconHelper(iconId, spriteSheet, attributes) %}
+
+    {% set sheet = spriteSheet if spriteSheet else "fa" %}
+    {% set attr = attributes if attributes else "" %}
+
+    <svg {{attr}}><use href="/library/img/{{sheet}}.svg#{{iconId}}"></use></svg>
+
+{% endmacro %}

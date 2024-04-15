@@ -1,0 +1,30 @@
+﻿@model MVC.Models.Navigation.NavigationViewModel
+
+@{ var links = Model.Links.Where(x => x.StickyIconOnMobile).ToList(); }
+
+@if (@links.Count > 0)
+{
+    <nav class="nav mobile-quick-links" aria-label="Quick Links">
+        @foreach (var footerIconLink in links)
+        {
+            var desktopClass = footerIconLink.IsDesktopOnly ? "desktop-only" : "";
+            var speedbumpClass = footerIconLink.UseSpeedBump ? "speedbump-class" : "";            
+
+            <span class="nav-item @desktopClass">
+                <a class="nav-link @speedbumpClass" href="@footerIconLink.Url" aria-label="@footerIconLink.AriaLabel" target="@footerIconLink.Target">
+                    @if (footerIconLink.IconUrl.Contains('#'))
+                    {
+                        <svg>
+                            <use xlink:href="@footerIconLink.IconUrl"></use>
+                        </svg>
+                    }
+                    else
+                    {
+                        <img src="@footerIconLink.IconUrl.TrimStart('~')" alt="@footerIconLink.DisplayText Icon" />
+                    }
+                    @Html.Raw(footerIconLink.DisplayText)
+                </a>
+            </span>
+        }
+    </nav>
+}

@@ -1,0 +1,96 @@
+/* Custom Checkmark style starts */
+$customCheckbox-checked-color: #5FA512;
+$customCheck-unchecked-color: #A3A3A3;
+$customCheckbox-checkbox-height: 40px;
+$customCheckbox-background-color:#FFF;
+$customCheckbox-font-color:#5FA512;
+$customCheckbox-duration: .4s;
+@-moz-keyframes dothabottomcheck{
+    0% { height: 0; }
+    100% { height: $customCheckbox-checkbox-height/2; }
+}
+
+@-webkit-keyframes dothabottomcheck{
+    0% { height: 0; }
+    100% { height: $customCheckbox-checkbox-height/2; }
+}
+
+@keyframes dothabottomcheck{
+    0% { height: 0; }
+    100% { height: $customCheckbox-checkbox-height/2;  }
+}
+
+@keyframes dothatopcheck{
+    0% { height: 0; }
+    50% { height: 0; }
+    100% { height: $customCheckbox-checkbox-height * 1.2; }
+}
+@-webkit-keyframes dothatopcheck{
+    0% { height: 0; }
+    50% { height: 0; }
+    100% { height: $customCheckbox-checkbox-height * 1.2; }
+}
+@-moz-keyframes dothatopcheck{
+    0% { height: 0; }
+    50% { height: 0; }
+    100% { height: $customCheckbox-checkbox-height * 1.2; }
+}
+
+input.customCheckbox{
+    display:none;
+}
+
+.customCheckboxLabel {
+    height: $customCheckbox-checkbox-height;
+    width: $customCheckbox-checkbox-height;
+    background-color: #FFF;
+    border: 1px solid $customCheck-unchecked-color;
+    border-radius: 5px;
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    transition: border-color ease $customCheckbox-duration/2;
+    cursor:pointer;
+
+    &::before, &::after {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        position: absolute;
+        height: 0;
+        width: $customCheckbox-checkbox-height * .2;
+        background-color: $customCheckbox-checked-color;
+        display: inline-block;
+        transform-origin: left top;
+        border-radius: 5px;
+        content: ' ';
+        transition: opacity ease .5;
+    }
+
+    &::before {
+        top:$customCheckbox-checkbox-height * .72;
+        left: $customCheckbox-checkbox-height * .41;
+        box-shadow: 0 0 0 $customCheckbox-checkbox-height * .05 $customCheckbox-background-color;
+        transform: rotate(-135deg);
+    }
+
+    &::after {
+        top: $customCheckbox-checkbox-height * .37;
+        left: $customCheckbox-checkbox-height * .05;
+        transform: rotate(-45deg);
+    }
+}
+input.customCheckbox:checked + .customCheckboxLabel,
+.customCheckboxLabel.checked {
+    border-color:$customCheckbox-checked-color;
+    
+    &::after{
+        height: $customCheckbox-checkbox-height * .5;
+        animation: dothabottomcheck $customCheckbox-duration/2 ease 0s forwards;
+    }
+     
+    &::before{
+        height: $customCheckbox-checkbox-height * 1.2;
+        animation: dothatopcheck $customCheckbox-duration ease 0s forwards;
+    }
+}

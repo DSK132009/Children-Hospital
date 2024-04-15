@@ -1,0 +1,19 @@
+﻿@model MVC.Models.Breadcrumbs.BreadcrumbModel
+
+<div class="widget-wrapper">
+    <div class="breadcrumbs">
+        <div class="container">
+            @foreach (var breadcrumbPage in Model.BreadcrumbPages)
+            {
+                if (!breadcrumbPage.CurrentDocument)
+                {
+                    <a href="@breadcrumbPage.PageAlias" aria-label="Navigate to @breadcrumbPage.PageName">@breadcrumbPage.PageName.ToUpper()</a> 
+                }
+                else
+                {
+                    <span class="current-page">@breadcrumbPage.PageName.ToUpper()</span>
+                }
+            }
+        </div>
+    </div>
+</div>

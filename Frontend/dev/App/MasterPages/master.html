@@ -1,0 +1,66 @@
+{% import '../macros/ui-helpers.html' as UiHelpers %}
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+    <head>
+        <title>{% if pageTitle %}{{pageTitle}} | {% endif %}Company Name</title>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <meta name="theme-color" content="#14609d">
+            
+            <!-- Facebook OG -->
+            <meta property="og:image" content="/library/img/logo.png" />
+            <meta property="og:title" content="Company Name" />
+            <meta property="og:description" content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa explicabo eum necessitatibus, distinctio dolore corporis." />
+            <meta property="og:site_name" content="Lorem ipsum dolor.">
+            <meta property="og:url" content="https://www.site.com/">
+
+            <!-- Twitter Cards -->
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@company" />
+            <meta name="twitter:title" content="Company Name" />
+            <meta name="twitter:description" content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel, ipsam." />
+            <meta name="twitter:image" content="/library/img/logo.png" />
+
+            <!-- CSS -->
+            <link rel="stylesheet" href="/library/css/jquery-ui.min.css">
+            <link rel="stylesheet" href="/library/css/styles.css">
+
+            <!-- Fonts -->
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet"> 
+            
+            <!-- FavIcon (add here)-->
+    </head>
+
+    <body>
+        <a class="sr-only sr-only-focusable" href="#content" title="Skip to main content">Skip to main content</a>
+        
+        {% include "../views/shared/header.html" %}
+
+        <div  id="content" class="page-wrapper">
+            {% block content %}{% endblock %}
+        </div>
+
+        {% include "../views/shared/footer.html" %}
+        {% include "../views/shared/mobile-quick-links.html" %}
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>    
+        <script>!window.jQuery && document.write('<script src="/library/js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+        <script src="/library/js/vendor/browser-polyfill.min.js"></script>
+        <script src="/library/js/vendor/svg4everybody.min.js"></script>
+        <script src="/library/js/bootstrap-build.js"></script>
+        <script src="/library/js/vendor/slick.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbGvwaR_MvckOLp1fBMQvephi5E_YJ8Xg&callback=locationsReady&libraries=geometry,places,geocoder"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+        
+
+        <!-- mainES6.js == debug file. main.js == production-->
+        <script src="/library/js/main.js"></script>
+    </body>
+
+</html>

@@ -1,0 +1,168 @@
+.image-callout {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #f2f6fa;
+    z-index: -1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 341px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: $white;
+    z-index: -1;
+  }
+
+  &-content {
+    display: flex;
+    padding-right: 547px;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    min-height: 485px;
+
+    @include IE11-only() {
+      height: 485px;
+    }
+
+    h2,
+    .h2 {
+      @include line-height(42);
+      color: #0da14b;
+      margin-bottom: 18px;
+    }
+
+    img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      height: 485px;
+      width: 485px;
+      object-fit: cover;
+    }
+
+    .btn {
+      margin-top: 42px;
+      align-self: flex-start;
+      padding: 12px 25px;
+    }
+  }
+
+  &#{&}-left {
+    .image-callout-content {
+      padding-left: 547px;
+      padding-right: 0;
+
+      h2 {
+        color: #dc312b;
+      }
+
+      img {
+        right: auto;
+        left: 0;
+      }
+
+      &::after {
+        right: auto;
+        left: 0;
+        transform: translateX(-100%);
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 341px;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      background-color: $white;
+      z-index: -1;
+    }
+  }
+
+  @include media-breakpoint-down(lg) {
+    &::before {
+      background-color: #f2f6fa;
+    }
+
+    &-content {
+      padding-right: 0;
+      padding-top: 46px;
+      padding-bottom: 43px;
+      min-height: 0;
+      display: block;
+      background-color: #f2f6fa;
+
+      h2,
+      .h2 {
+        margin-bottom: 9px;
+      }
+
+      img {
+        height: 176px;
+        width: auto;
+        position: static;
+        float: right;
+        margin: 0 0 13px 13px;
+      }
+
+      .btn {
+        margin-top: 30px;
+      }
+
+      &::after {
+        display: block;
+        position: static;
+        width: auto;
+        clear: both;
+        background-color: #f2f6fa;
+      }
+    }
+
+    &#{&}-left {
+      .image-callout-content {
+        padding-left: 0;
+
+        img {
+          float: left;
+          margin: 13px 13px 0 0;
+        }
+      }
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    &-content {
+      display: flex;
+      flex-wrap: wrap;
+
+      .fr-view {
+        flex: 1 1 50%;
+        width: 100%;
+      }
+
+      img {
+        flex: 1 1 auto;
+        margin: 0 0 13px 0px;
+		width: 100%;
+      }
+
+      .btn {
+        display: block;
+        margin: 30px auto 0 0;
+      }
+    }
+  }
+}

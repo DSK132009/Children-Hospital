@@ -1,0 +1,15 @@
+.latest-news-articles {
+    padding: 55px 0 49px;
+
+    .slick-track {
+        display: flex;
+    }
+
+    ul.slick-dots {
+        margin-top: 22px;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 0;
+    }
+}

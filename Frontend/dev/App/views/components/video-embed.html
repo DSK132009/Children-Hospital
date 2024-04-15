@@ -1,0 +1,36 @@
+<div class="video-embed">
+    <a href="#" class="video-embed-btn" aria-label="play this video" data-bs-toggle="modal" data-bs-target='{{ modalId }}'>
+        <img class="img-load-lazy" data-src="https://picsum.photos/id/237/444/245" alt="image placeholder for video" data-srcset="https://picsum.photos/id/237/444/245" />
+        <img class="play-btn" data-src="/public/library/img/video-cta-play-btn.png" alt="Play video" role="" src="/public/library/img/video-cta-play-btn.png">
+    </a>
+
+    <div class="video-embed-content">
+        <div class="video-overlay"></div>
+        
+        <div class="video-inner">
+            <div>
+                <div class="modal-spinner">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div class="video-frame">
+                    <div>
+                        <button class="close-frame btn btn-primary" aria-label="Close">
+                            Close
+                        </button>
+                    </div>
+                    <iframe
+                        width="444"
+                        height="245"
+                        data-src='{{ iframeSrc }}'
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen>
+                    </iframe>
+                    <button type="button" class="btn btn-link text-white sr-only" aria-label="Close" data-bs-dismiss="modal">Close Modal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

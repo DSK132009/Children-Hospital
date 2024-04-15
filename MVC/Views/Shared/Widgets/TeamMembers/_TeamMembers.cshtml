@@ -1,0 +1,48 @@
+﻿@using TeamMembers;
+@using CMS.DataEngine
+@using CMS.DocumentEngine
+@using CMS.SiteProvider
+
+@model ComponentViewModel<MVC.Models.Widgets.TeamMembers.TeamMemberProperties>
+
+@inject XperienceAdapter.Repositories.IMediaFileRepository MediaFileRespository
+
+@{
+    var GuidList = Model.Properties.TeamMembers.Select(x => x.ObjectGuid.Value).ToList();
+    var teamMembers = TeamMemberInfoProvider.ProviderObject.Get().WhereIn("TeamMemberGuid", GuidList).ToList();
+}
+<div class="widget-wrapper">
+    <section class="team-members-section" aria-label="team members section">
+        <div class="container">
+            <h2 class="headline">@Html.Raw(Model.Properties.Heading)</h2>
+            <div class="team-members">
+                <div class="row">
+                    @foreach (var teamMember in teamMembers)
+                    {
+                        if (teamMember != null)
+                        {
+                            <div class="col-6 col-xl-3">
+                                <div class="card-wrapper">
+                                    <article class="team-member-card" aria-label="team member card">
+                                        <div class="card-img" style="background-image: url('@teamMember.Image')"></div>
+                                        <div class="card-title">
+                                            @if (String.IsNullOrEmpty(teamMember.Bio) && String.IsNullOrEmpty(teamMember.ExternalLink))
+                                            {
+                                                <a class="h4" style="text-decoration: none;">@teamMember.Name.ToUpper()</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@(String.IsNullOrEmpty(teamMember.ExternalLink) ? $"/teammember/{teamMember.TeamMemberID}" : teamMember.ExternalLink)" aria-label="link to the page of @teamMember.Name" class="h5">@teamMember.Name.ToUpper()</a>
+                                            }
+                                        </div>
+                                        <p class="description">@teamMember.Title</p>
+                                    </article>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

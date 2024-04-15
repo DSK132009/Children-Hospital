@@ -1,0 +1,145 @@
+.services-banner {
+  display: flex;
+  border-top: 1px solid $white;
+  background-color: $primary;
+  height: 55px;
+  margin: 51px 0 106px;
+  padding: 17px 0 19px;
+
+  .container-fluid {
+    display: flex;
+    justify-content: flex-end;
+    width:70%;
+
+    > a {
+      margin-right: 0.5rem;
+    }
+
+    .service-options {
+      display: flex;
+
+      a {
+        margin-right: 2rem;
+
+        &:first-of-type {
+          color: #FFFFFF;
+          text-decoration: none;
+        }
+
+        &:last-of-type {
+          margin-right: 0;
+        }
+
+        &:hover {
+          text-decoration: 2px solid underline #FFFFFF;
+        }
+
+
+      }
+    }
+
+    :last-child {
+      span {
+        margin: 0 0;
+      }
+    }
+  }
+
+  a {
+    @include font-size(16);
+    @include line-height(19);
+    color: $white;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    font-weight: 700;
+    
+    &:first-of-type {
+      color: #06EFA0;
+      text-decoration: 2px solid underline #06EFA0;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    @include IE11-only() {
+      max-width: 177px;
+      width: 100%;
+    }
+
+    svg, img {
+      @include svg-format(46px, 46px, currentColor);
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: 2px solid underline white;
+    }
+
+    span {
+      margin-right: 2rem;
+    }
+  }
+
+  @include media-breakpoint-down(lgxl) {
+    height: auto;
+    position: relative;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: #FFFFFF;
+      position: absolute;
+      top: 50%;
+    }
+
+    .container-fluid {
+      flex-direction: column;
+      align-items: center;
+
+      .service-options a {
+        margin-top: 1.5rem;
+      }
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    margin: 1rem 0;
+
+    .container-fluid {
+      justify-content: center;
+    }
+
+    a {
+      span {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  #all-services {
+    > .container {
+      max-width: 100%;
+    }
+  }
+}
+
+:target {
+  scroll-margin-top: 175px;
+
+  @include media-breakpoint-down(lgxl) {
+    scroll-margin-top: 80px;
+  }
+
+  @include media-breakpoint-down(md) {
+    scroll-margin-top: 60px;
+  }
+}

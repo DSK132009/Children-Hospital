@@ -1,0 +1,56 @@
+﻿@using CMS.DocumentEngine.Types.UMCHospital
+@using Kentico.PageBuilder.Web.Mvc
+@using CMS.DocumentEngine;
+@using CMS.DocumentEngine.Types.Custom
+
+@model IEnumerable<ServiceListing>
+
+<div class="services-banner">
+	<div class="container-fluid">
+		<a href="#all-services" aria-label="All Services">
+			<span>All Services</span>
+		</a>
+		<div class="service-options">
+			<a href="#a-f" aria-label="A - F">
+				<span>A - F</span>
+			</a>
+			<a href="#g-l" aria-label="G - L">
+				<span>G - L</span>
+			</a>
+			<a href="#m-p" aria-label="M - P">
+				<span>M - P</span>
+			</a>
+			<a href="#q-z" aria-label="Q - Z">
+				<span>Q - Z</span>
+			</a>
+		</div>
+	</div>
+</div>
+
+<div id="all-services" class="widget-wrapper">
+	<div class="container">
+		<div class="row">
+			@foreach (var item in Model)
+			{
+
+					<div class="col-6 col-lg-4" @(String.IsNullOrEmpty(item.AnchorID)? Html.Raw("") : Html.Raw($"id=\"{item.AnchorID}\""))>
+						<article class="card general-card">
+							<div class="card-img">
+							<img class="img-load-lazy"
+							 data-src="@item.PreviewImage"
+							 data-srcset="@item.PreviewImage"
+							 alt="" />
+							</div>
+							<div class="card-content">
+								<h5>@item.PreviewHeaderText</h5>
+								<p>
+									@Html.Raw(Html.Kentico().ResolveRichText(item.PreviewDescription))
+								</p>
+								<a href="@item.NodeAliasPath" aria-label="Learn More about Quick Care">Learn More</a>
+							</div>
+						</article>
+					</div>
+			}
+		 </div>
+	</div>
+</div>

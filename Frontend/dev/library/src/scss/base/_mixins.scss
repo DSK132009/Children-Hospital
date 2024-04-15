@@ -1,0 +1,53 @@
+/**
+* Pass px font size, outputs px and rem font size
+* @param {font-size} $size
+**/
+@mixin font-size($size) {
+    font-size: $size + px;
+    font-size: ($size/16) + rem;
+}
+
+/**
+* Pass px line height, outputs px and rem line height
+* @param {line-height} $size
+**/
+@mixin line-height($size) {
+    line-height: $size + px;
+    line-height: ($size/16) + rem;
+}
+
+@mixin svg-format($width, $height, $color) {
+	width: 100%;
+	min-width: $width;
+	max-width: $width;
+	max-height: $height;
+	fill: $color;
+}
+
+$transition-def: 0.125s;
+
+@mixin transitionDefault($prop) {
+	transition: $prop linear $transition-def;
+  }
+
+/* Throws content into media query that specifically target IE11 only */
+@mixin IE11-only {
+	@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	  @content;
+	}
+  }
+
+/* ex:
+	input { 
+		@include placeholder {
+	    	font-family: $base-font-family;
+	    	color: red;
+		}
+	}
+*/
+@mixin placeholder {
+	&::-webkit-input-placeholder {@content}
+	&:-moz-placeholder           {@content}
+	&::-moz-placeholder          {@content}
+	&:-ms-input-placeholder      {@content}  
+}

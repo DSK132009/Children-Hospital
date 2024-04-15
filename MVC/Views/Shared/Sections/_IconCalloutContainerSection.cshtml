@@ -1,0 +1,14 @@
+﻿@using Kentico.PageBuilder.Web.Mvc
+@using Kentico.Web.Mvc
+
+@{ 
+    var widgetWhitelist = new[] { "UMCHospital.Widgets.IconCallout" };
+}
+
+<div class="widget-wrapper">
+    <div class="container d-none d-lg-block">
+        <div class="row">
+            @await Html.Kentico().WidgetZoneAsync(allowedWidgets: widgetWhitelist)
+        </div>
+    </div>
+</div>

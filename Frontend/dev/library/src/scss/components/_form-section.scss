@@ -1,0 +1,28 @@
+.form-section {
+    min-width: 100%;
+    background: #F2F6FA;
+    padding: 48px 0px 31px;
+
+    .ktc-default-section {
+        max-width: 1255px;
+        margin: 0 auto;
+
+        label {
+            @include font-size(18);
+            @include line-height(21);
+            letter-spacing: -0.19px;
+            color: $primary;
+            text-transform: uppercase;
+        }
+
+        input {
+            border: 1px solid #CACACA;
+            margin-bottom: 18px;
+        }
+
+        .btn {
+            display: block;
+            margin: 0 auto;
+        }
+    }
+}

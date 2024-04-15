@@ -1,0 +1,38 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.News.LatestNews.LatestNewsProperties>
+
+@using CMS.DocumentEngine;
+@using CMS.DocumentEngine.Types.UMCHospital
+
+@{
+    var columns = new string[] { "DocumentName", "NodeAliasPath", "ArticleName", "PublishDate", "ShortSummary", "Headline", "LinkedArticle", "OpenInNewTab" };
+
+    var articles = ArticleProvider.GetArticles().Columns(columns).OrderByDescending("PublishDate").TopN(4);
+}
+
+<div class="widget-wrapper">
+    <div class="container">
+        <h2 class="headline"><strong>Latest</strong> News</h2>
+        <div class="latest-news-articles">
+            @foreach (var article in articles)
+            {
+                <article class="card news-card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3 class="h5">@article.Headline</h3>
+                        </div>
+                        <p class="card-text">@article.ShortSummary</p>
+                        <a href="@(!string.IsNullOrEmpty(article.LinkedArticle)? article.LinkedArticle : article.NodeAliasPath)" target="@(article.OpenInNewTab ? "_blank" : "")" class="card-link" aria-label="Learn more about @article.Headline">Learn More</a>
+                    </div>
+                </article>
+            }
+        </div>
+        @if (!String.IsNullOrEmpty(Model.Properties.Text) && !String.IsNullOrEmpty(Model.Properties.Url))
+        {
+            <div class="text-center d-none d-lg-block">
+                <a class="btn btn-secondary" href="@Model.Properties.Url" aria-label="@Model.Properties.AriaLabel"
+                   target="@(Model.Properties.OpenNewTab ? "_blank" : "")">@Model.Properties.Text</a>
+            </div>
+        }
+    </div>
+
+</div>

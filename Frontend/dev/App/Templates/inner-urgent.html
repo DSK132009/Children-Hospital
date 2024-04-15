@@ -1,0 +1,19 @@
+{% set pageTitle="Inner Hospital" %}
+{% extends "../MasterPages/master.html" %}
+
+{% block content %}
+
+	{% set innerHero = true %}
+	{% set heroHeader = 'UMC URGENT CARE' %}
+	
+	{% include "../views/components/generic-hero.html" %}
+	{% include "../views/shared/breadcrumbs.html" %}
+	{% include "../views/components/quick-nav.html" %}
+	{% include "../views/components/image-callout.html" %}
+
+	{% include "../views/components/figures-achievements.html" %}
+	{% include "../views/components/donor-registration.html" %}
+
+	{% include "../views/components/newsletter-cta.html" %}
+
+{% endblock %}

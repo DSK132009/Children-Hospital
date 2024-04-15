@@ -1,0 +1,47 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.CTA.GeneralCard.GeneralCardProperties>
+
+@inject XperienceAdapter.Repositories.IMediaFileRepository MediaFileRespository
+
+@{
+    string target = (Model.Properties.LinkOpenNewTab) ? "_blank" : "_self";
+
+    var image = "";
+    if ((Model?.Properties?.Image?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.Image.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            image = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+}
+
+<div class="col-6 col-lg-4">
+    <article class="card general-card">
+        <div class="card-img">
+            <img class="" data-src="@image" data-srcset="@image" alt="@Model.Properties.ImageAltText" src="@image" srcset="@image">
+        </div>
+        <div class="card-content">
+            <h5>@Html.Raw(Model.Properties.Heading)</h5>
+            
+            @if (Context.Kentico().PageBuilder().EditMode)
+            {
+                <div style="border: solid; box-sizing: border-box; padding: 10px; border-color: black; padding-bottom: 20px">
+                    @{ Html.Kentico().RichTextEditor(nameof(Model.Properties.Content)); }
+                </div>
+            }
+            else
+            {
+                <div class="fr-view">
+                    @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.Content))
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Properties.LinkUrl))
+            {
+                <a href="@Model.Properties.LinkUrl" aria-label="@Model.Properties.LinkAriaLabel" target="@target">@Model.Properties.LinkText</a>
+            }
+        </div>
+    </article>
+</div>

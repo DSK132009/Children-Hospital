@@ -1,0 +1,28 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.CTA.IconCallout.IconCalloutProperties>
+
+@inject XperienceAdapter.Repositories.IMediaFileRepository MediaFileRespository
+
+@{
+    var image = "";
+    var target = Model.Properties.OpenNewTab ? "_blank" : "_self";
+
+    if ((Model?.Properties?.Icon?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.Icon.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            image = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+}
+
+<div class="col-lg-3">
+    <a class="icon-callout" href="@Model.Properties.Url" aria-label="@Model.Properties.AriaLabel" target="@(Model.Properties.OpenNewTab ? "_blank" : "_self")">
+        @if (!string.IsNullOrWhiteSpace(image))
+        {
+            <img class="img-load-lazy" src="@image" data-src="@image" alt="@Model.Properties.IconAltText" target="@target" data-srcset="@image" />
+        }
+        @Model.Properties.Text
+    </a>
+</div>

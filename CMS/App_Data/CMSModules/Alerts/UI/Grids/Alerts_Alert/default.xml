@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<grid>
+  <actions parameters="AlertID">
+    <action name="edit" caption="$General.Edit$" fonticonclass="icon-edit" fonticonstyle="allow" />
+    <action name="#delete" caption="$General.Delete$" fonticonclass="icon-bin" fonticonstyle="critical" confirmation="$General.ConfirmDelete$" />
+    <action name="#moveup" caption="$General.Up$" fonticonclass="icon-chevron-up" />
+    <action name="#movedown" caption="$General.Down$" fonticonclass="icon-chevron-down" />
+  </actions>
+  <columns>
+
+    <column source="AlertName" caption="Name" wrap="true" width="400px" />
+    <column source="AlertText" caption="Text" wrap="true" />
+    <column source="AlertEnabled" caption="Enabled" />
+    <column source="AlertPublishFrom" caption="Publish From" />
+    <column source="AlertPublishTo" caption="Publish To" />
+  </columns>
+  <options>
+    <key name="DisplayFilter" value="false" />
+    <key name="AllowSorting" value="false" />
+  </options>
+</grid>

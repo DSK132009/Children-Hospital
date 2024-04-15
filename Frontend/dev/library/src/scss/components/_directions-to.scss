@@ -1,0 +1,51 @@
+.directions-to-section {
+    .content-section {
+        margin-top: 53px;
+    }
+
+    h5 {
+        color: #000;
+        margin-bottom: 15px;
+        width: 90%;
+        @include line-height(29);
+    }
+
+    ul {
+        padding-left: 15px;
+        padding: 0 0;
+
+        li {
+            @include font-size(16);
+            @include line-height(22);
+            letter-spacing: -0.4px;
+            padding-bottom: 1rem;
+        }
+    }
+
+    .bottom-cta {
+        margin-top: 77px;
+        text-align: center;
+    }
+
+    @include media-breakpoint-down(md) {
+        .content-section {
+            margin-top: 33px;
+        }
+
+        h5 { 
+            @include line-height(22);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        ul {
+            li {
+               @include line-height(20);
+            }
+        }
+
+        .bottom-cta {
+            margin-top: 21px;
+        }
+    }
+}

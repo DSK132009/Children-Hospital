@@ -1,0 +1,18 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.CTA.StatCard.StatCardProperties>
+
+<div class="card stat-card">
+    <div class="card-body">
+        <div class="card-title" data-num="@Model.Properties.Title">0</div>
+        <hr />
+        @if (Context.Kentico().PageBuilder().EditMode)
+        {
+            Html.Kentico().RichTextEditor(nameof(Model.Properties.Text));
+        }
+        else
+        {
+            <div class="card-text fr-view">
+                @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.Text))
+            </div>
+        }
+    </div>
+</div>

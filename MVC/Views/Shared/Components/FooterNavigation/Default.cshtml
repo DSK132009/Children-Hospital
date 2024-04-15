@@ -1,0 +1,56 @@
+﻿@using CMS.DataEngine
+@using Kentico.PageBuilder.Web.Mvc
+@using Kentico.Content.Web.Mvc
+@using Kentico.Web.Mvc
+@using Kentico.Forms.Web.Mvc.Widgets;
+@using CMS.SiteProvider;
+@using CMS.DocumentEngine;  
+
+@inject IPageDataContextRetriever PageDataRetriever
+
+@model MVC.Models.Navigation.NavigationViewModel
+
+@{    
+    var copyrightText = SettingsKeyInfoProvider.GetValue("Global_CopyrightText");
+    var address = SettingsKeyInfoProvider.GetValue("Global_Address");
+}
+
+<footer class="site-footer" aria-label="main site footer">
+    <div class="container-fluid">  
+        <div class="row flex-wrap flex-lg-nowrap m-0">
+            <div class="col-12 col-lg-auto p-0">
+                <nav class="site-footer-nav" aria-label="Site Footer Navigation"> 
+                    <vc:footer-navigation-social />
+                    <ul class="nav link-nav">
+                        @foreach (var footerLink in Model.Links.Where(x => x.DocType == "FooterNavigation"))
+                        {
+                            var desktopClass = footerLink.IsDesktopOnly ? "desktop-only" : "";
+                            var speedbumpClass = footerLink.UseSpeedBump ? "speedbump-class" : "";
+
+                            <li class="nav-item @desktopClass">
+                                <a class="nav-link @speedbumpClass" href="@footerLink.Url" aria-label="@footerLink.AriaLabel" 
+                                   target="@footerLink.Target">@Html.Raw(footerLink.DisplayText)</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-12 col-lg p-0">
+                <nav class="site-footer-util-nav" aria-label="Site Footer Utility Navigation">
+                    <div class="d-flex justify-content-between">
+                        <vc:footer-navigation-icons />
+                        <vc:footer-navigation-icons-desktop />
+                    </div>
+                    <address class="address">
+                        @address
+                    </address>
+                    <div class="copyright">
+                        @Html.Raw(copyrightText)
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<vc:footer-navigation-icons-mobile-sticky />

@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <Configurations>Debug;Release;dev;stage;prod</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	  <!--<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>5</WarningLevel>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="App_Data\**" />
+    <Compile Remove="UMCChildrensHospital\**" />
+    <Compile Remove="UMCHospital\**" />
+    <Content Remove="App_Data\**" />
+    <Content Remove="UMCChildrensHospital\**" />
+    <Content Remove="UMCHospital\**" />
+    <EmbeddedResource Remove="App_Data\**" />
+    <EmbeddedResource Remove="UMCChildrensHospital\**" />
+    <EmbeddedResource Remove="UMCHospital\**" />
+    <None Remove="App_Data\**" />
+    <None Remove="UMCChildrensHospital\**" />
+    <None Remove="UMCHospital\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="13.0.47" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
+    <PackageReference Include="SimpleMvcSitemap.Core" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Alerts\Alerts.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Events\Events.csproj" />
+    <ProjectReference Include="..\Locations\Locations.csproj" />
+    <ProjectReference Include="..\TeamMembers\TeamMembers.csproj" />
+    <ProjectReference Include="..\URLRedirection\URLRedirection.csproj" />
+    <ProjectReference Include="..\XperienceAdapter\XperienceAdapter.csproj" />
+  </ItemGroup>
+
+</Project>
+

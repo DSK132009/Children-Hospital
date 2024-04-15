@@ -1,0 +1,169 @@
+{% set pageTitle="Inner" %}
+{% extends "../MasterPages/master.html" %}
+
+{% block content %}
+
+	{% set innerHero = true %}
+	{% set heroHeader = 'QUICK AND PRIMARY CARE' %}
+	
+	{% include "../views/components/generic-hero.html" %}
+	{% include "../views/shared/breadcrumbs.html" %}
+    
+    <!-- general content area -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p> 
+                    Welcome to UMC Quick and Primary Care, where convenient, minor medical care fits into your hectic schedule or having a primary care physician with 
+                    hospital facilities access at the touch of a button. Weather you need a health screening, tetanus shot or treatment for a minor illness, 
+                    it’s now easy as going to your local store.
+                </p>
+                <p>
+                    We provide minor medical care-treatments, screenings and adult immunizations for patients ages 18 years and older. 
+                    Quick Care does not provide emergency services. Urgent care is available on a walk-in basis for minor emergencies. Select a location to learn more. 
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-lg-4">
+                    <article class="card general-card">
+                        <div class="card-img">
+                            <img
+                                class="img-load-lazy"
+                                data-src="https://via.placeholder.com/300"
+                                data-srcset="https://via.placeholder.com/300 2x, https://via.placeholder.com/300 1x"
+                                alt="">
+                        </div>
+                        <div class="card-content">
+                            <h5>QUICK CARE</h5>
+                            <p>Ut sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <a href="#" aria-label="Learn More about Quick Care">Learn More</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-6 col-lg-4">
+                    <article class="card general-card">
+                        <div class="card-img">
+                            <img
+                                class="img-load-lazy"
+                                data-src="https://via.placeholder.com/300"
+                                data-srcset="https://via.placeholder.com/300 2x, https://via.placeholder.com/300 1x"
+                                alt="">
+                        </div>
+                        <div class="card-content">
+                            <h5>PRIMARY CARE</h5>
+                            <p>Ut sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <a href="#" aria-label="Learn More about Primary Care">Learn More</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col col-lg-4">
+                    <article class="card general-card">
+                        <div class="card-img">
+                            <img
+                                class="img-load-lazy"
+                                data-src="https://via.placeholder.com/300"
+                                data-srcset="https://via.placeholder.com/300 2x, https://via.placeholder.com/300 1x"
+                                alt="">
+                        </div>
+                        <div class="card-content">
+                            <h5>UMC ONLINE CARE</h5>
+                            <p>Ut sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <a href="#" aria-label="Learn More about UMC Online Care">Learn More</a>
+                            </p>    
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "../views/components/umc-care-filter.html" %}
+
+    {% set clinicType = "QUICK" %}
+
+    {% set locations = [{
+            'img': '/library/img/image-callout.png',
+            'title': 'BLUE DIAMOND QUICK CARE',
+            'address1': '4760 Blue Diamond Road Suite 110',
+            'address2': 'Las Vegas, Nevada 89139',
+            'phone': '(702) 383 - 2300',
+            'lat': '36.03',
+            'lng': '-115.20',
+            'type': 'quick-care',
+            'days': 'Monday - Sunday',
+            'hours': '8am - 8pm'
+        },
+        {
+            'img': '/library/img/image-callout.png',
+            'title': 'CENTENNIAL HILLS QUICK CARE',
+            'address1': '5785 Centennial Center Blvd',
+            'address2': 'Las Vegas, Nevada 89139',
+            'phone': '(702) 383 - 6270',
+            'lat': '36.26',
+            'lng': '-115.25',
+            'type': 'quick-care',
+            'days': 'Monday - Sunday',
+            'hours': '8am - 8pm'
+        },
+        {
+            'img': '/library/img/image-callout.png',
+            'title': 'NELLIS QUICK CARE',
+            'address1': '5330 N Nellis Blvd Suite 61',
+            'address2': 'Las Vegas, Nevada 89110',
+            'phone': '702) 383 - 6240',
+            'lat': '36.16',
+            'lng': '-115.06',
+            'type': 'quick-care',
+            'days': 'Monday - Sunday',
+            'hours': '8am - 8pm'
+        }]   %}
+    
+    {% include "../views/components/clinic-location-list.html" %}
+
+    {% set clinicType = "PRIMARY" %}
+
+    {% set locations = [{
+            'img': '/library/img/image-callout.png',
+            'title': 'BLUE DIAMOND PRIMARY CARE',
+            'address1': '4760 Blue Diamond Road Suite 110',
+            'address2': 'Las Vegas, Nevada 89139',
+            'phone': '(702) 383 - 2300',
+            'lat': '36.03',
+            'lng': '-115.20',
+            'type': 'primary-care',
+            'days': 'Monday - Sunday',
+            'hours': '8am - 8pm'
+        },
+        {
+            'img': '/library/img/image-callout.png',
+            'title': 'CENTENNIAL HILLS PRIMARY CARE',
+            'address1': '5785 Centennial Center Blvd',
+            'address2': 'Las Vegas, Nevada 89139',
+            'phone': '(702) 383 - 6270',
+            'lat': '36.26',
+            'lng': '-115.25',
+            'type': 'primary-care',
+            'days': 'Monday - Sunday',
+            'hours': '8am - 8pm'
+        },
+        {
+            'img': '/library/img/image-callout.png',
+            'title': 'NELLIS PRIMARY CARE',
+            'address1': '5330 N Nellis Blvd Suite 61',
+            'address2': 'Las Vegas, Nevada 89110',
+            'phone': '702) 383 - 6240',
+            'lat': '36.16',
+            'lng': '-115.06',
+            'type': 'primary-care',
+            'days': 'Monday - Sunday',
+            'hours': '8am - 8pm'
+        }]   %}
+    
+    {% include "../views/components/clinic-location-list.html" %}
+
+{% endblock %}

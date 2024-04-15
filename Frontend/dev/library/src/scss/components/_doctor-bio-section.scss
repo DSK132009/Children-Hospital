@@ -1,0 +1,16 @@
+.doctor-bio-section {
+
+    .col-12:first-child {
+        margin-bottom: 75px;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    @include media-breakpoint-down(md) {
+        .col-12:first-child {
+            margin-bottom: 28px;
+        }
+    }
+}

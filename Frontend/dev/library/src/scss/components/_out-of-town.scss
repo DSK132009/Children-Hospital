@@ -1,0 +1,13 @@
+.oot-section {
+
+    .col-12:last-child {
+        margin-top: 91px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        
+        .col-12:last-child {
+            margin-top: 40px;
+        }
+    }
+}

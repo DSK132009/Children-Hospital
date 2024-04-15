@@ -1,0 +1,71 @@
+﻿@using MVC.Models.Widgets.Breadcrumbs;
+@using MVC.Models.TeamMember;
+@using TeamMembers;
+
+@model TeamMemberDetailModel
+
+@{
+    var cacheEnabled = !Context.Kentico().Preview().Enabled && !Context.Kentico().PageBuilder().EditMode;
+
+    //ViewData used to pass current page into Layout
+    ViewData["CurrentPage"] = Model.Page;
+    Layout = "_Layout";
+
+    var dependencyKeys = new string[] {
+        $"teammembers.teammember|byid|{Model.TeamMember.TeamMemberID}"};
+
+    string FormattedDoctorName = "";
+
+    if (Model.TeamMember.Name.Trim().IndexOf(' ') > 0)
+    {
+        int FirstSpace = Model.TeamMember.Name.Trim().IndexOf(' ');
+        FormattedDoctorName = "<B>" + Model.TeamMember.Name.Trim().Substring(0, FirstSpace) + "</B>" + Model.TeamMember.Name.Trim().Substring(FirstSpace);
+    }
+    else
+    {
+        FormattedDoctorName = "<B>" + Model.TeamMember.Name.Trim() + "</B>";
+    }
+
+}
+
+<cache enabled="@cacheEnabled" expires-after="@TimeSpan.FromMinutes(5)" vary-by-user="true" vary-by-route="@CacheVaryByConstants.ROUTE_URL_SLUG,TeamMemberId">
+    <cache-dependency cache-keys="@dependencyKeys" enabled="@cacheEnabled" />
+
+    <div class="widget-wrapper">
+        <div class="back-arrow">
+            <div class="container">
+                <a href="javascript:history.back(-1)" aria-label="back to previous page">
+                    <svg>
+                        <use href="/library/img/fa.svg#long-arrow-alt-left"></use>
+                    </svg>BACK
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-wrapper">
+        <section class="doctor-bio-section" aria-label="@Model.TeamMember.Name bio section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="headline">@Html.Raw(Html.Kentico().ResolveRichText(FormattedDoctorName))</h2>
+                        <p>@Model.TeamMember.Title</p>
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            @if (!string.IsNullOrWhiteSpace(Model.TeamMember.Image))
+                            {
+                                <div class="col-12 col-lg-6">
+                                    <img class="" data-src="@Model.TeamMember.Image" alt="Doctor Bio Image" data-srcset="@Model.TeamMember.Image" src="@Model.TeamMember.Image" srcset="@Model.TeamMember.Image">
+                                </div>
+                            }
+                            <div class="col-12 col-lg-6">
+                                @Html.Raw(Html.Kentico().ResolveRichText(Model.TeamMember.Bio))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</cache>

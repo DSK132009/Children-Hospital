@@ -1,0 +1,65 @@
+﻿@using Kentico.PageBuilder.Web.Mvc
+
+@model ComponentViewModel<MVC.Models.Widgets.Content.FeaturedContent.FeaturedContentProperties>
+
+@{ 
+    string fullWidthContent = "";
+
+    fullWidthContent = (string.IsNullOrWhiteSpace(Model.Properties.ContentLeft)) ? Model.Properties.ContentRight : "";
+    if (string.IsNullOrWhiteSpace(fullWidthContent))
+    {
+        fullWidthContent = (string.IsNullOrWhiteSpace(Model.Properties.ContentRight)) ? Model.Properties.ContentLeft : "";
+    }
+}
+
+<section class="featured-content-section" aria-label="Featured Content Section">
+    <div class="container">
+        <h2 class="headline">@Html.Raw(Model.Properties.Heading)</h2>
+        @if (!string.IsNullOrWhiteSpace(fullWidthContent))
+        {
+            @if (Context.Kentico().PageBuilder().EditMode)
+            {
+                <div class="content-section row" style="border: solid; box-sizing: border-box; padding: 10px; border-color: black; padding-bottom: 20px;">
+                    @{ Html.Kentico().RichTextEditor(nameof(fullWidthContent)); }
+                </div>
+            }
+            else
+            {
+                <div class="content-section row fr-view">
+                    @Html.Raw(Html.Kentico().ResolveRichText(fullWidthContent))
+                </div>
+            }
+        }
+        else
+        {
+            <div class="content-section row">
+                
+                @if (Context.Kentico().PageBuilder().EditMode)
+                {
+                    <div class="col-12 col-lg-6" style="border: solid; box-sizing: border-box; padding: 10px; border-color: black; padding-bottom: 20px;">
+                        @{ Html.Kentico().RichTextEditor(nameof(Model.Properties.ContentLeft)); }
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 col-lg-6 fr-view">
+                        @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.ContentLeft))
+                    </div>
+                }
+                
+                @if (Context.Kentico().PageBuilder().EditMode)
+                {
+                    <div class="col-12 col-lg-6" style="border: solid; box-sizing: border-box; padding: 10px; border-color: black; padding-bottom: 20px;">
+                        @{ Html.Kentico().RichTextEditor(nameof(Model.Properties.ContentRight)); }
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 col-lg-6 fr-view">
+                        @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.ContentRight))
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

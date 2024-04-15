@@ -1,0 +1,73 @@
+pool:
+  vmImage: windows-latest
+
+variables:
+  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'release'
+
+steps:
+- powershell: |
+   $commitId= "$env:BUILD_SOURCEVERSION"
+   $definitionName= "$env:BUILD_DEFINITIONNAME"
+   $shortId= $commitId.Substring(0, 8)
+   $date = Get-Date -format "yyyyMMdd"
+   $buildName=$definitionName+"_"+$date+"_"+$shortId
+   Write-Host ("##vso[build.updatebuildnumber]$buildName")
+  displayName: GenerateBuildNumber
+
+- task: UseDotNet@2
+  displayName: 'Install .NET 6.0 SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '6.0.x'
+
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 6.2.0'
+  inputs:
+    versionSpec: 6.2.0
+    checkLatest: true
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: 'UMC Childrens Hospital.sln' #Edit to match solution name
+    feedsToUse: config
+    nugetConfigPath: nuget.config    
+    
+- task: NodeTool@0 
+  displayName: 'Use Node.js 16.18.0'
+  inputs:
+    versionSpec: '16.18.0'
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: 'install'
+    workingDir: 'Frontend'
+
+- task: Grunt@0
+  inputs:
+    gruntFile: 'Frontend/Gruntfile.js' 
+    arguments: 'STBuild'
+
+
+- task: VSBuild@1
+  displayName: 'Build solution'
+  inputs:
+    solution: 'UMC Childrens Hospital.sln' #Edit to match solution name
+    msbuildArgs: '/p:Optimize=true /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(Build.ArtifactStagingDirectory)\\" /p:AutoParameterizationWebConfigConnectionStrings=False'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    clean: true
+    maximumCpuCount: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact - Main Site'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\\'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact - Static Site'
+  inputs:
+    PathtoPublish: 'Frontend/static_html'
+    artifactName: 'static' 

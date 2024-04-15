@@ -1,0 +1,51 @@
+﻿
+@using CMS.DataEngine
+@using CMS.DocumentEngine.Types.UMCHospital
+
+@model Kentico.Content.Web.Mvc.Routing.IPageViewModel<Article>
+
+@{ var cacheEnabled = !Context.Kentico().Preview().Enabled && !Context.Kentico().PageBuilder().EditMode;
+
+    //ViewData used to pass current page into Layout
+    ViewData["CurrentPage"] = Model.Page;
+    Layout = "_Layout";
+
+    var dependencyKeys = new string[]
+    {
+    $"documentid|{Model.Page.DocumentID}"}; }
+
+<cache enabled="@cacheEnabled" expires-after="@TimeSpan.FromMinutes(5)" vary-by-user="true" vary-by-route="@CacheVaryByConstants.ROUTE_URL_SLUG">
+    <cache-dependency cache-keys="@dependencyKeys" enabled="@cacheEnabled" />
+
+    <div class="widget-wrapper">
+        <div class="back-arrow">
+            <div class="container">
+                <a href="javascript:history.back(-1)" aria-label="back to previous page">
+                    <svg>
+                        <use href="/library/img/fa.svg#long-arrow-alt-left"></use>
+                    </svg>BACK
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-wrapper">
+        <section class="doctor-bio-section" aria-label="@Model.Page.Headline">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="headline">@Model.Page.Headline</h2>
+                        <p>@Model.Page.Author</p>
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                @Html.Raw(Html.Kentico().ResolveRichText(Model.Page.Content))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</cache>

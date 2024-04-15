@@ -1,0 +1,169 @@
+﻿@model MVC.Models.Navigation.NavigationViewModel
+@using CMS.DataEngine
+
+@inject IPageDataContextRetriever PageDataRetriever
+
+@{ //Global Settings
+    var logo = SettingsKeyInfoProvider.GetValue("Global_HeaderLogo").Replace("/admin", "");
+    var loginText = SettingsKeyInfoProvider.GetValue("Global_LoginText");
+    var loginLink = SettingsKeyInfoProvider.GetValue("Global_LoginURL");
+    var loginADAText = SettingsKeyInfoProvider.GetValue("Global_LoginADAText");
+    var loginIcon = SettingsKeyInfoProvider.GetValue("Global_LoginIcon");
+    var contactUsText = SettingsKeyInfoProvider.GetValue("Global_ContactUsText");
+    var contactUsADAText = SettingsKeyInfoProvider.GetValue("Global_ContactUsADAText");
+    var contactUsUrl = SettingsKeyInfoProvider.GetValue("Global_ContactUsUrl");
+    var contactUsIcon = SettingsKeyInfoProvider.GetValue("Global_ContactUsIcon");
+
+    //Logo Override
+    var headerOverride = "";
+    IPageDataContext<CMS.DocumentEngine.Types.Custom.Page> currentPage;
+    PageDataRetriever.TryRetrieve<CMS.DocumentEngine.Types.Custom.Page>(out currentPage);
+    if (currentPage != null && currentPage.Page != null)
+    {
+        headerOverride = currentPage.Page.OverrideHeaderLogo;
+    }
+}
+
+@* Header *@
+
+<header class="site-header" aria-label="main site header">
+    <nav class="site-header-util-nav" aria-label="Utility Navigation">
+        <button class="btn site-header-menu-btn" type="button" aria-label="Toggle mobile menu" data-icon="/public/library/img/icons.svg#mobile-nav" data-close-icon="/public/library/img/icons.svg#mobile-close">
+            <svg>
+                <use xlink:href="/public/library/img/icons.svg#mobile-nav"></use>
+            </svg>
+        </button>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link login-link" href="@loginLink" aria-label="@loginADAText">
+                    @if (loginIcon.Contains('#'))
+                    {
+                        <svg>
+                            <use xlink:href="@loginIcon"></use>
+                        </svg>
+                    }
+                    else
+                    {
+                        <img src="@loginIcon.TrimStart('~').Replace("/admin", "")" alt="@loginADAText" />
+                    }
+                    <div>@loginText</div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link contact-link" href="@contactUsUrl" aria-label="@contactUsADAText">
+                    @if (contactUsIcon.Contains('#'))
+                    {
+                        <svg>
+                            <use xlink:href="@contactUsIcon"></use>
+                        </svg>
+                    }
+                    else
+                    {
+                        <img src="@contactUsIcon.TrimStart('~').Replace("/admin", "")" alt="@contactUsADAText" />
+                    }
+                    <div>@contactUsText</div>
+                </a>
+            </li>
+        </ul>
+        <a class="site-header-logo" href="/" aria-label="Home page">
+            <img class="img-load-lazy" src="@logo" data-src="@logo" alt="UMC logo" data-srcset="@logo" />
+        </a>
+        <div class="site-header-search">
+            <button class="btn site-header-search-toggle" type="button" aria-label="Toggle site search" data-icon="/public/library/img/icons.svg#search" data-close-icon="/public/library/img/icons.svg#mobile-close">
+                <svg class="search-icon">
+                    <use xlink:href="/public/library/img/icons.svg#search"></use>
+                </svg>
+            </button>
+            <button class="btn btn-link site-header-search-submit" id="searchBtnHdr" type="button" aria-label="Submit site search">
+                <svg class="search-icon">
+                    <use xlink:href="/public/library/img/icons.svg#search"></use>
+                </svg>
+            </button>
+            <div class="site-header-search-dropdown">
+                <input type="text" class="form-control" id="siteSearch" placeholder="search" />
+                <label class="sr-only" for="siteSearch">Search site</label>
+            </div>
+        </div>
+    </nav>
+    <nav class="site-header-nav" aria-label="Site Navigation">
+        <ul class="nav">
+            @foreach (var node in Model.Links)
+            {
+                var navClass = node.IsMobileOnly ? "mobile-only" : "dropdown";
+                var speedbumpClass = node.UseSpeedBump ? "speedbump-class" : "";                
+
+                if (node.IsSpaced)
+                {
+                    navClass += " mobile-only-spacer";
+                }
+
+                if (node.IsHighlighted)
+                {
+                    navClass += " mobile-only-highlight";
+                }
+
+                <li class="nav-item @navClass">
+
+                    @if (node.IsMobileOnly && !String.IsNullOrEmpty(node.IconUrl))
+                    {
+                        <a class="nav-link login-link @speedbumpClass" href="@node.Url" aria-label="@node.AriaLabel" target="@node.Target">
+                            @if (node.IconUrl.Contains('#'))
+                            {
+                                <svg>
+                                    <use xlink:href="@node.IconUrl"></use>
+                                </svg>
+                            }
+                            else
+                            {
+                                <img src="@node.IconUrl.TrimStart('~')" alt="@node.DisplayText Icon" />
+                            }
+
+                            <div>@node.DisplayText</div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link dropdown-toggle @speedbumpClass" href="@node.Url"
+                           aria-label="@node.AriaLabel" target="@node.Target">
+                            @node.DisplayText
+                        </a>
+                    }
+                    @if (node.Links.Count > 0 && !node.IsMobileOnly)
+                    {
+                        <ul class="dropdown-menu">
+                            @foreach (var subNode in node.Links)
+                            {
+                                var spaceClass = subNode.IsSpaced ? "dropdown-menu-item-spaced" : "";
+                                var subNodeSpeedbumpClass = subNode.UseSpeedBump ? "speedbump-class" : "";
+
+                                <li class="@spaceClass">
+                                    <a class="dropdown-item @subNodeSpeedbumpClass" href="@subNode.Url"
+                                       aria-label="@subNode.AriaLabel" target="@subNode.Target">@subNode.DisplayText</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </nav>
+</header>
+
+
+<script>
+    defer(function () {
+        $('#siteSearch').keyup(function (e) {
+            if (e.keyCode === 13) {
+                $('#searchBtnHdr').click();
+            }
+        });
+
+        $('#searchBtnHdr').click(function () {
+            var value = $('#siteSearch').val().trim();
+
+            if (value) {
+                location.href = '/search?searchText=' + value;
+            }
+        });
+    });
+</script>

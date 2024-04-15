@@ -1,0 +1,25 @@
+.quick-care-locator {
+    background-color: #F2F6FA;
+    padding-top: 22px;
+
+    &-input.form-control {
+        border: 1px solid #b5c2cf;
+    }
+
+    .h3 {
+        text-transform: uppercase;
+    }
+
+    .form-group {
+        margin-top: 8px;
+        margin-bottom: 31px;
+    }
+}
+.pac-container.pac-logo {
+    // Results dropdown needs an offset to compensate for the body top margin
+    transform: translateY(-143px);
+
+    @include media-breakpoint-down(lg) {
+        transform: translateY(-52px);
+    }
+}

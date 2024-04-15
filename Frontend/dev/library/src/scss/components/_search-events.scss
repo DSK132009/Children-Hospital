@@ -1,0 +1,140 @@
+.search-events {
+    padding: 25px 0;
+
+    .intro-text {
+        font-weight: 500;
+        margin-bottom: 40px;
+    }
+    .event-filters {
+        .wide-col { 
+            width: 110px; 
+            justify-content: flex-start;
+            margin-right: 0;
+        }
+        .wide-col-2 { 
+            width: 175px; 
+            justify-content: flex-start;
+            margin-right: 0;
+        }
+        select { 
+            height: 40px; 
+            flex: 1 1 auto;
+        }
+        .datepicker-row { 
+            justify-content: space-between; 
+
+            label { justify-content: flex-start; }
+        }        
+        .datepicker { width: 181px; }
+        .form-group { margin-bottom: 30px; }
+        label {
+            @include font-size(16);
+            font-weight: 700;     
+            padding-right: 15px; 
+        }
+        #location-filter { width: auto; }
+        .form-inline {
+            padding: 0;
+            flex-flow: row nowrap;
+            
+            input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="search"], input[type="tel"], input[type="autocomplete"], select, textarea {            
+                border: 1px solid #ccc;
+            }
+        }
+        .form-check-input {
+            width: 27px;
+            height: 27px;
+        }
+        .form-buttons {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-left: 9.5rem;
+
+            .wide-col-2 { display: none; }
+            
+            .btn {
+                width: 173px;
+                height: 45px;
+
+                &:first-of-type {
+                    
+                }
+
+                &:last-of-type {
+                    margin-right: 14px;
+                }
+            }
+        }        
+    }
+    .events-table {
+        margin-top: 50px;
+        overflow: auto;
+
+        th, td { white-space: nowrap; }
+    }
+}
+
+
+
+@include media-breakpoint-down(lg) {
+    .search-events {
+
+        .event-filters {
+
+            .form-buttons {
+                .wide-col-2 { display: none; }
+
+                .btn:first-of-type {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}
+
+
+@include media-breakpoint-down(md) {
+    .search-events {
+
+        .event-filters {
+            .wide-col, .wide-col-2 {
+                width: auto;
+                margin-right: 10px;
+                justify-content: flex-start;
+            }
+            .form-group { margin-bottom: 20px; }
+            .datepicker-row {
+                flex-direction: column;
+                justify-content: flex-start;
+
+                .form-inline {
+                    flex-direction: row;
+                    align-items: center;
+                }
+                label { width: 100px; }
+                .wide-col { margin-right: 0; }
+            }
+            #location-filter { width: 100%; }
+            .datepicker { width: 100%; }
+            .types-row {
+                flex-direction: column;
+            }
+            .form-inline { 
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .form-buttons {
+                margin: 30px 15px 0 15px;
+
+                input, a {
+                    width: 50%;
+                    margin-right: 10px;
+                }
+                .reset-btn { 
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}

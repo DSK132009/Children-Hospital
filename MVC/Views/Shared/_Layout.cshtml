@@ -1,0 +1,313 @@
+﻿@using CMS.DataEngine
+@using CMS.DocumentEngine
+@using CMS.Helpers
+@using CMS.SiteProvider
+@using Kentico.Activities.Web.Mvc
+@using CMS.Membership 
+
+
+@{
+    var cacheEnabled = !Context.Kentico().Preview().Enabled && !Context.Kentico().PageBuilder().EditMode;
+
+    TreeNode CurrentDocument;
+    if (ViewData["CurrentPage"] != null)
+    {
+        //Used to pass Page object from custom page types/templates into the layout
+        CurrentDocument = ViewData["CurrentPage"] as TreeNode;
+    }
+    else
+    {
+        CurrentDocument = Model?.Page ?? TreeNode.New();
+    }
+
+    var footerContent = SettingsKeyInfoProvider.GetValue("Global_FooterContent");
+    var varyBy = CurrentDocument.NodeAliasPath == "/404" ? "404" : "Not-404";
+
+    var dependencyKeys = new string[] {
+        $"documentid|{CurrentDocument.DocumentID}",
+        $"node|{SiteContext.CurrentSiteName.ToLower()}|{CurrentDocument.NodeAliasPath.ToLower()}|childnodes",
+        $"nodes|{SiteContext.CurrentSiteName.ToLower()}|umchospital.navigation|all",
+        $"nodes|{SiteContext.CurrentSiteName.ToLower()}|umchospital.navigationlink|all",
+        "cms.settingskey|all",
+        "nodeorder"};
+}
+
+
+<!DOCTYPE html>
+
+<html lang="en" class="no-js">
+<cache enabled="@cacheEnabled" expires-after="@TimeSpan.FromMinutes(5)" vary-by-user="true" vary-by-route="@CacheVaryByConstants.ROUTE_URL_SLUG,@varyBy,TeamMemberId,EventCodeName">
+    <cache-dependency cache-keys="@dependencyKeys" enabled="@cacheEnabled" />
+
+    @{
+        CurrentDocument.LoadInheritedValues(new[] { "DocumentPageDescription", "DocumentPageTitle" }); //Ensures that parent is inherited if this page is set to do so
+        var ogImage = SettingsKeyInfoProvider.GetValue("Global_OGImage");
+        var twitterImage = SettingsKeyInfoProvider.GetValue("Global_TwitterImage");
+        var pageTitle = String.IsNullOrEmpty(CurrentDocument.DocumentPageTitle) ? CurrentDocument.DocumentName : CurrentDocument.DocumentPageTitle;
+        var pagePrefix = SettingsKeyInfoProvider.GetValue("CMSPageTitlePrefix");        
+    }
+
+    <head>
+        @if (CurrentDocument.NodeAliasPath == "/")
+        {
+            //Html.Kentico().PageTitle() seems to do internal caching based on the current document so output caching parameters do not affect it.
+            //For cases like this, use a manual title property to make sure it is the correct title
+            //Only needed for the Root of the site where some pages use this page as a dummy page for page context initialization
+
+            var pageTitlePrefix = SettingsKeyInfoProvider.GetValue("CMSPageTitlePrefix", SiteContext.CurrentSiteID);
+            var pageTitleFormat = SettingsKeyInfoProvider.GetValue("CMSPageTitleFormat", SiteContext.CurrentSiteID);
+
+            <title>@pageTitleFormat.Replace("{%prefix%}", pageTitlePrefix).Replace("{%pagetitle_orelse_name%}", CurrentDocument.DocumentName)</title>
+        }
+        else
+        {
+            @Html.Kentico().PageTitle()
+        }
+        @Html.Kentico().PageDescription()
+        @Html.Kentico().PageKeywords()
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#006F51">
+
+        @* OG Tags *@
+
+        <meta property="og:image" content="@URLHelper.RemovePortFromURL(URLHelper.GetAbsoluteUrl(ogImage))">
+        <meta property="og:title" content="@pageTitle | @pagePrefix">
+        <meta property="og:description" content="@CurrentDocument.DocumentPageDescription">
+        <meta property="og:site_name" content="@SiteContext.CurrentSite.DisplayName">
+        <meta property="og:url" content="@URLHelper.RemovePortFromURL(URLHelper.GetAbsoluteUrl(Url.Kentico().CurrentPageUrl()).ToLower())">
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@SiteContext.CurrentSite.DisplayName" />
+        <meta name="twitter:title" content="@pageTitle | @pagePrefix" />
+        <meta name="twitter:description" content="@CurrentDocument.DocumentPageDescription" />
+        <meta name="twitter:image" content="@URLHelper.RemovePortFromURL(URLHelper.GetAbsoluteUrl(twitterImage))" />
+
+        <meta name="msvalidate.01" content="B53535060E6295D3A648A11FD36F885A" />
+        <meta name="google-site-verification" content="5mBys5nJSyHwDJ5RdGlYMm43bNj71XCtJx5tfEkp4uM" />
+
+        <link rel="canonical" href="@Url.Kentico().PageCanonicalUrl()" />
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+        @* Favicon *@
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+
+        @* Custom Head Scripts *@
+        @if (!Context.Kentico().PageBuilder().EditMode)
+        {
+            @:@Html.Raw(SettingsKeyInfoProvider.GetValue("Global_HeadScripts"))
+        }
+
+        <link rel="stylesheet" href="/public/library/css/vendor/jquery-ui.min.css">
+
+        <environment include="Development">
+            <link rel="stylesheet" href="/public/library/css/styles.css" asp-append-version="true" />      
+        </environment>
+        <environment exclude="Development">
+            <link rel="stylesheet" href="/bundles/styles.min.css" asp-append-version="true" />
+        </environment>
+
+        @* Schema Markup *@
+        <script type='application/ld+json'>
+            {
+                "@@context": "http://schema.org/",
+                "@@type": "Organization",
+                "address": {
+                    "@@type": "PostalAddress",
+                    "addressLocality": "@SettingsKeyInfoProvider.GetValue("Schema_City")",
+                    "addressRegion": "@SettingsKeyInfoProvider.GetValue("Schema_State")",
+                    "postalCode": "@SettingsKeyInfoProvider.GetValue("Schema_PostalCode")",
+                    "streetAddress": "@SettingsKeyInfoProvider.GetValue("Schema_Address")"
+                },
+                "email": "@SettingsKeyInfoProvider.GetValue("Schema_Email")",
+                "faxNumber": "@SettingsKeyInfoProvider.GetValue("Schema_FaxNumber")",
+                "logo": "@URLHelper.RemovePortFromURL(URLHelper.GetAbsoluteUrl(SettingsKeyInfoProvider.GetValue("Schema_Logo"))).ToLower()",
+                "name": "@SettingsKeyInfoProvider.GetValue("Schema_Organization")",
+                "telephone": "@SettingsKeyInfoProvider.GetValue("Schema_Phone")",
+                "url": "@SettingsKeyInfoProvider.GetValue("Schema_URL")"
+            }
+        </script>
+
+        @* Fonts *@
+        <link rel="stylesheet" href="https://use.typekit.net/iem8sur.css">
+
+        @RenderSection("head", required: false)
+
+        <page-builder-styles />
+
+        <script>
+            var defer = function (method) {
+                if (window.jQuery) {
+                    method();
+                    return;
+                }
+
+                var jqueryPoll = setInterval(function () {
+                    if (window.jQuery) {
+                        method();
+                        clearInterval(jqueryPoll);
+                    }
+                }, 50);
+            };
+        </script>
+    </head>
+</cache>
+<body class="@(!Context.Kentico().PageBuilder().EditMode ? "not-editing" : "")">
+    @if (Context.Kentico().PageBuilder().EditMode)
+    {
+        <style>
+            .fr-svg {
+                vertical-align: baseline !important;
+            }
+
+            .fr-dropdown-list li:before {
+                content: none !important;
+            }
+        </style>
+    }
+
+    @if (!Context.Kentico().PageBuilder().EditMode)
+    {
+        <style>
+            .fr-video iframe {
+                max-height: 56.25vw;
+            }
+        </style>
+    }
+
+    @if (!Context.Kentico().PageBuilder().EditMode)
+    {
+        @:@Html.Raw(SettingsKeyInfoProvider.GetValue("Global_TopBodyScripts"))
+    }
+
+    <a class="sr-only sr-only-focusable" href="#content" title="Skip to main content" data-ktc-search-exclude>Skip to main content</a>
+
+    <div class="scrollToTop">
+        <svg><use href="/public/library/img/fa.svg#arrow-up"></use></svg>
+    </div>
+
+    @* Main Navigation *@
+    <cache enabled="@cacheEnabled" exipres-after="@TimeSpan.FromMinutes(5)">
+        <cache-dependency cache-keys='@dependencyKeys' enabled="@cacheEnabled" />
+        <vc:main-navigation />
+    </cache>
+
+    @if(Context.Kentico().PageBuilder().EditMode)
+    {
+        <div style="padding-top: 180px;"></div>
+    }  
+
+    <div id="content" class="page-wrapper" role="main" style="@(Context.Kentico().PageBuilder().EditMode ? "margin-top: 0px;" : "")">
+        @* Alerts *@
+        <cache enabled="@cacheEnabled" exipres-after="@TimeSpan.FromMinutes(5)">
+            <cache-dependency cache-keys='new string[] { "alerts.alert|all" }' enabled="@cacheEnabled" />
+            @if (!Context.Kentico().PageBuilder().EditMode)
+            {            
+                <vc:alerts />            
+            }
+        </cache>        
+
+        @RenderBody()
+
+        <editable-area area-identifier="MainWidgetZone" allow-widget-output-cache="@cacheEnabled" widget-output-cache-expires-after="@TimeSpan.FromMinutes(5)" />
+
+        <cache enabled="@cacheEnabled" exipres-after="@TimeSpan.FromMinutes(10)">
+            <cache-dependency cache-keys="@dependencyKeys" enabled="@cacheEnabled" />             
+            
+            @if (!String.IsNullOrWhiteSpace(footerContent))
+            {
+                <section class="generic-content section-padding" style="display: flex;">
+                    <div class="container">
+                        @Html.Raw(footerContent)
+                    </div>
+                </section>            
+            } 
+        </cache>
+            
+    </div>
+
+    @* Footer  *@
+    <cache enabled="@cacheEnabled" exipres-after="@TimeSpan.FromMinutes(5)">
+        <cache-dependency cache-keys='@dependencyKeys' enabled="@cacheEnabled" />
+        <vc:footer-navigation />
+    </cache>
+
+    @* Cookie Message *@
+    @*<cache enabled="@cacheEnabled" exipres-after="@TimeSpan.FromMinutes(5)">
+            <cache-dependency cache-keys="@dependencyKeys" enabled="@cacheEnabled" />
+            @if (!Context.Kentico().PageBuilder().EditMode)
+            {
+                <section class="cookie-message" aria-label="we use cookies message">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="message">
+                                    @Html.Raw(SettingsKeyInfoProvider.GetValue("Global_CookieMessage"))
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="cta">
+                                    <a href="#" class="accept-btn btn btn-secondary" aria-label="@SettingsKeyInfoProvider.GetValue("Global_CookieButtonText")"><i class="fas fa-times"></i>@SettingsKeyInfoProvider.GetValue("Global_CookieButtonText")</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        </cache>*@
+
+    @if (Context.Kentico().PageBuilder().EditMode)
+    {
+        var guid = Guid.NewGuid();
+        <page-builder-scripts />
+        <script src="/public/library/js/richtextconfig.js?v=@guid"></script>
+    } 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>!window.jQuery && document.write('<script src="/public/library/js/vendor/jquery-3.5.1.min.js"><\/script>')</script>
+
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+    @if (!Context.Kentico().PageBuilder().EditMode)
+    {
+        <cache>
+            <environment include="Development">
+                <script src="/public/library/js/vendor/browser-polyfill.min.js"></script>
+                <script src="/public/library/js/vendor/svg4everybody.min.js"></script>
+                <script src="/public/library/js/vendor/slick.min.js"></script>
+                <script src="/public/library/js/bootstrap-build.js"></script>
+                <script src="/public/library/js/main.js" asp-append-version="true"></script>
+                <script src="/_content/Kentico.Content.Web.Rcl/Content/Bundles/Public/systemFormComponents.min.js"></script>
+            </environment>
+            <environment exclude="Development">
+                <script src="/public/library/js/vendor/slick.min.js"></script>
+                <script src="/bundles/scripts.min.js" asp-append-version="true"></script>
+                <script src="/_content/Kentico.Content.Web.Rcl/Content/Bundles/Public/systemFormComponents.min.js"></script>
+            </environment>
+        </cache>
+    } 
+    @* Registers scripts that ensure logging of campaign page visits and page-related activities *@
+    @Html.Kentico().ActivityLoggingScript()
+
+
+    @RenderSection("foot", required: false)
+
+    @* Custom Footer Scripts *@
+    @if (!Context.Kentico().PageBuilder().EditMode)
+    {
+        @* Custom Footer Scripts *@
+        @Html.Raw(SettingsKeyInfoProvider.GetValue("Global_FooterScripts"))
+    }
+</body>
+</html>

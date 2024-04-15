@@ -1,0 +1,230 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.Hero.VideoHero>
+
+@inject XperienceAdapter.Repositories.IMediaFileRepository MediaFileRespository
+
+@{
+    var mobileImage = "";
+
+    if ((Model?.Properties?.MobileImage?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.MobileImage.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            mobileImage = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+
+    var heroHeading = String.IsNullOrEmpty(Model.Properties.Heading) ? Model?.Page?.DocumentName : Model.Properties.Heading;
+    var headingClass = String.IsNullOrWhiteSpace(Model.Properties.SubHeading) ? "" : "hero-header-divide";
+}
+
+<section class="video-hero lazy-load-bg">
+    @if(!String.IsNullOrEmpty(Model.Properties.VimeoID))
+    {
+        <div class="video-holder">
+            <iframe src="https://player.vimeo.com/video/@Model.Properties.VimeoID?background=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+    }
+    
+
+    <div class="mobile-img lazy-load-bg" style="background-image: url('@mobileImage');"></div>
+    
+    <div class="video-hero-bottom-wrapper">
+        <div class="video-hero-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h1 class="@headingClass">@Html.Raw(heroHeading)</h1>
+                        @if (!string.IsNullOrWhiteSpace(Model.Properties.SubHeading))
+                        {
+                            <p>@Model.Properties.SubHeading</p>
+                        }
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="generic-hero-ctas">
+                            @if (!string.IsNullOrWhiteSpace(Model.Properties.QuickLinkOneLink))
+                            {
+                                var target = Model.Properties.QuickLinkOneOpenNewTab ? "_blank" : "_self";
+
+                            <a href="@Model.Properties.QuickLinkOneLink" aria-label="@Model.Properties.QuickLinkOneTitle" target="@target">
+
+                                @if (!string.IsNullOrWhiteSpace(Model.Properties.QuickLinkOneIcon))
+                                    {
+                                        if (Model.Properties.QuickLinkOneIcon.StartsWith("~/getmedia"))
+                                        {
+                                            <img src="@Model.Properties.QuickLinkOneIcon" />
+                                        }
+                                        else
+                                        {
+                                            <svg><use xlink:href="/public/library/img/icons.svg#@Model.Properties.QuickLinkOneIcon"></use></svg>
+                                        }
+                                    }
+
+                                <span>@Html.Raw(Model.Properties.QuickLinkOneHeading)</span>
+                            </a>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.Properties.QuickLinkTwoLink))
+                            {
+                                var target = Model.Properties.QuickLinkTwoOpenNewTab ? "_blank" : "_self";
+
+                            <a href="@Model.Properties.QuickLinkTwoLink" aria-label="@Model.Properties.QuickLinkTwoTitle" target="@target">
+
+                                @if (!string.IsNullOrWhiteSpace(Model.Properties.QuickLinkTwoIcon))
+                                    {
+                                    if (Model.Properties.QuickLinkTwoIcon.StartsWith("~/getmedia"))
+                                        {
+                                            <img src="@Model.Properties.QuickLinkTwoIcon" />
+                                        }
+                                        else
+                                        {
+                                            <svg><use xlink:href="/public/library/img/icons.svg#@Model.Properties.QuickLinkTwoIcon"></use></svg>
+                                        }
+
+                                    }
+
+                                <span>@Html.Raw(Model.Properties.QuickLinkTwoHeading)</span>
+                            </a>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.Properties.QuickLinkThreeLink))
+                            {
+                                var target = Model.Properties.QuickLinkThreeOpenNewTab ? "_blank" : "_self";
+
+                            <a href="@Model.Properties.QuickLinkThreeLink" aria-label="@Model.Properties.QuickLinkThreeTitle" target="@target">
+
+                                @if (!string.IsNullOrWhiteSpace(Model.Properties.QuickLinkThreeIcon))
+                                    {
+                                    if (Model.Properties.QuickLinkThreeIcon.StartsWith("~/getmedia"))
+                                        {
+                                            <img src="@Model.Properties.QuickLinkThreeIcon" />
+                                        }
+                                        else
+                                        {
+                                            <svg><use xlink:href="/public/library/img/icons.svg#@Model.Properties.QuickLinkThreeIcon"></use></svg>
+                                        }
+                                
+                                    }
+
+                                <span>@Html.Raw(Model.Properties.QuickLinkThreeHeading)</span>
+                            </a>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.Properties.QuickLinkFourLink))
+                            {
+                                var target = Model.Properties.QuickLinkFourOpenNewTab ? "_blank" : "_self";
+
+                            <a href="@Model.Properties.QuickLinkFourLink" aria-label="@Model.Properties.QuickLinkFourTitle" target="@target">
+
+                                @if (!string.IsNullOrWhiteSpace(Model.Properties.QuickLinkFourIcon))
+                                    {
+                            if (Model.Properties.QuickLinkFourIcon.StartsWith("~/getmedia"))
+                                        {
+                                            <img src="@Model.Properties.QuickLinkFourIcon" />
+                                        }
+                                        else
+                                        {
+                                            <svg><use xlink:href="/public/library/img/icons.svg#@Model.Properties.QuickLinkFourIcon"></use></svg>
+                                        }
+                                    }
+
+                                <span>@Html.Raw(Model.Properties.QuickLinkFourHeading)</span>
+                            </a>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="generic-hero-footer">
+            <div class="container-fluid">
+                @if (!string.IsNullOrWhiteSpace(Model.Properties.FooterQuickLinkOneLink))
+                {
+                    var target = Model.Properties.FooterQuickLinkOneOpenNewTab ? "_blank" : "_self";
+
+                <a href="@Model.Properties.FooterQuickLinkOneLink" aria-label="@Model.Properties.FooterQuickLinkOneTitle" target="@target">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Properties.FooterQuickLinkOneIcon))
+                        {
+                            if (Model.Properties.FooterQuickLinkOneIcon.StartsWith("~/getmedia"))
+                            {
+                                <img src="@Model.Properties.FooterQuickLinkOneIcon" />
+                            }
+                            else
+                            {
+                                <svg><use xlink:href="/public/library/img/icons.svg#@Model.Properties.FooterQuickLinkOneIcon"></use></svg>
+                            }
+                        }
+
+                    <span>@Html.Raw(Model.Properties.FooterQuickLinkOneHeading)</span>
+                </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Properties.FooterQuickLinkTwoLink))
+                {
+                    var target = Model.Properties.FooterQuickLinkTwoOpenNewTab ? "_blank" : "_self";
+
+                <a href="@Model.Properties.FooterQuickLinkTwoLink" aria-label="@Model.Properties.FooterQuickLinkTwoTitle" target="@target">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Properties.FooterQuickLinkTwoIcon))
+                        {
+                            if (Model.Properties.FooterQuickLinkTwoIcon.StartsWith("~/getmedia"))
+                            {
+                                <img src="@Model.Properties.FooterQuickLinkTwoIcon" />
+                            }
+                            else
+                            {
+                                <svg><use xlink:href="/public/library/img/icons.svg#@Model.Properties.FooterQuickLinkTwoIcon"></use></svg>
+                            }
+
+                        }
+
+                    <span>@Html.Raw(Model.Properties.FooterQuickLinkTwoHeading)</span>
+                </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Properties.FooterQuickLinkThreeLink))
+                {
+                    var target = Model.Properties.FooterQuickLinkThreeOpenNewTab ? "_blank" : "_self";
+
+                <a href="@Model.Properties.FooterQuickLinkThreeLink" aria-label="@Model.Properties.FooterQuickLinkThreeTitle" target="@target">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Properties.FooterQuickLinkThreeIcon))
+                        {
+                            if (Model.Properties.FooterQuickLinkThreeIcon.StartsWith("~/getmedia"))
+                            {
+                                <img src="@Model.Properties.FooterQuickLinkThreeIcon" />
+                            }
+                            else
+                            {
+                                <svg><use xlink:href="/public/library/img/icons.svg#@Model.Properties.FooterQuickLinkThreeIcon"></use></svg>
+                            }
+
+                        }
+
+                    <span>@Html.Raw(Model.Properties.FooterQuickLinkThreeHeading)</span>
+                </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Properties.FooterQuickLinkFourLink))
+                {
+                    var target = Model.Properties.FooterQuickLinkFourOpenNewTab ? "_blank" : "_self";
+
+                <a href="@Model.Properties.FooterQuickLinkFourLink" aria-label="@Model.Properties.FooterQuickLinkFourTitle" target="@target">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Properties.FooterQuickLinkFourIcon))
+                        {
+                            if (Model.Properties.FooterQuickLinkFourIcon.StartsWith("~/getmedia"))
+                            {
+                                <img src="@Model.Properties.FooterQuickLinkFourIcon" />
+                            }
+                            else
+                            {
+                                <svg><use xlink:href="/public/library/img/icons.svg#@Model.Properties.FooterQuickLinkFourIcon"></use></svg>
+                            }
+
+                        }
+
+                    <span>@Html.Raw(Model.Properties.FooterQuickLinkFourHeading)</span>
+                </a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

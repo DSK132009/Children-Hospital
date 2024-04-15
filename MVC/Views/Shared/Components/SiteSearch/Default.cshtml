@@ -1,0 +1,251 @@
+﻿@using MVC.Models.Search
+@using CMS.Helpers
+@using ValidationHelper = CMS.Helpers.ValidationHelper
+@using CMS.MediaLibrary
+@using CMS.Search;
+@using CMS.Taxonomy;
+
+@inject IPageDataContextRetriever PageDataRetriever
+@inject ICategoryInfoProvider CategoryInfoProvider
+
+@model SearchResultModel
+
+@{
+    var currentPageAlias = "/search";
+    IPageDataContext<CMS.DocumentEngine.Types.Custom.Page> currentPage;
+    PageDataRetriever.TryRetrieve<CMS.DocumentEngine.Types.Custom.Page>(out currentPage);
+    List<string> popularSearches = new List<string>();
+
+    if (currentPage != null && currentPage.Page != null)
+    {
+        currentPageAlias = currentPage.Page.NodeAliasPath.ToLower();
+    }
+
+    var categories = CategoryInfoProvider.Get();
+    var selectedCategoryId = Context.Request.Query["categoryId"];
+
+    if (string.IsNullOrWhiteSpace(selectedCategoryId))
+    {
+        selectedCategoryId = "0";
+    }
+
+    if (!string.IsNullOrWhiteSpace(Model.PopularSearches))
+    {
+        if (!Model.PopularSearches.Contains(","))
+        {
+            popularSearches.Add(Model.PopularSearches);
+        }
+        else
+        {
+            popularSearches = Model.PopularSearches.Split(',').ToList();
+        }
+    }
+
+    int startResults = (Model.CurrentPage - 1) * 10 + 1;
+    int endResults = Model.CurrentPage * 10;
+
+    if (Model.CurrentPage == Model.EndingPage)
+    {
+        startResults = ((Model.CurrentPage - 1) * 10) + 1;
+        endResults = Model.TotalResults;
+    }
+}
+
+<style>
+    @@media (max-width: 991.98px) {
+        .no-results-found-mobile {
+            display: block !important;
+        }
+        .no-results-found-desktop {
+            display: none !important;
+        }
+    }
+
+    @@media (min-width: 992px) {
+        .no-results-found-desktop {
+            display: block !important;
+            max-width: 440px;
+        }
+    }
+</style>
+
+@if (popularSearches.Count > 0)
+{
+    <div class="container">
+        <div class="row justify-content-end">
+            <div class="col-12 col-lg-4">
+                <div class="popular-search-list">
+                    <p class="title">POPULAR SEARCHES</p>
+                    <ul>
+                        @foreach (var popularSearch in popularSearches)
+                        {
+                            <li>
+                                <a href="@currentPageAlias?searchText=@popularSearch"
+                                    aria-label="link to @popularSearch">@popularSearch</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="widget-wrapper">
+    <section class="search-results-section" aria-label="Search Results Section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    @if (!String.IsNullOrEmpty(Model.Query))
+                    {
+                        <h5 class="headline">SEARCH RESULTS FOR <span class="search-term">@Model.Query.ToUpper()</span></h5>
+                    }
+                    else
+                    {                    
+                        <h5 class="headline">SEARCH RESULTS</h5>
+                    }
+
+                    @if(String.IsNullOrEmpty(Model.Query))
+                    {                    
+                        <strong class="no-results-found-desktop" style="margin-top: 10px; display: block;">Use the filters on the right-hand side to search the site.</strong>
+                    }
+                    else if (Model.Items.Count() > 0)
+                    {
+                        <p class="displayed-results"><span class="displayed">Showing @startResults-@endResults</span> of <span class="total">@Model.TotalResults.ToString() </span> results</p>
+                    }
+                    else
+                    {
+                        <strong class="no-results-found-desktop" style="margin-top: 10px; font-style: italic; display: block;">No results found for '@Model.Query' and selected category. Please adjust your search. </strong>
+                    }
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-lg-7">
+                                @foreach (var item in Model.Items)
+                                {
+                                    var aliasPath = item.ResultData["NodeAliasPath"]?.ToString() ?? "";
+                                    var documentPageDescription = item.ResultData["DocumentPageDescription"]?.ToString() ?? "";
+                                    var resultTitle = item.Title;
+
+                                    if (!String.IsNullOrEmpty(aliasPath))
+                                    {
+                                        <article class="search-result" aria-label="@resultTitle">
+                                            <a href="@aliasPath" aria-label="Click to read more about @resultTitle">@resultTitle</a>
+                                            <p>@documentPageDescription</p>
+                                        </article>
+                                    }
+                                }
+                            </div>
+                            <div class="col-12 col-lg-5">
+                                <div class="search-filter">
+                                    <div class="dropdown">
+                                        <button class="title dropdown-toggle d-lg-none" data-toggle="dropdown" aria-expanded="false" id="searchDropdownBtn">SEARCH FILTER</button>
+                                        <div class="dropdown-menu" aria-labelledby="searchDropdownBtn">
+                                            <form class="search-filter-form">
+                                                <div class="form-row">
+                                                    <div class="form-group col-12">
+                                                        <label for="keywordsInput">KEYWORD SEARCH</label>
+                                                        <input class="form-control" type="text" id="keywordsInput" placeholder="Type in a search term" value="@Model.Query" />
+                                                    </div>
+
+
+                                                    <div class="form-group col-12">
+                                                        <label for="categoryInput">CATEGORY</label>
+                                                        <select class="form-select" id="categoryInput" placeholder="SELECT A CATEGORY">
+                                                            <option value = "0" selected>SELECT A CATEGORY</option>
+                                                            @foreach (var category in categories)
+                                                            {
+                                                                var sel = (selectedCategoryId == category.CategoryID.ToString());
+                                                                if (sel)
+                                                                {
+                                                                    <option value="@category.CategoryID" selected>@category.CategoryDisplayName</option> 
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@category.CategoryID">@category.CategoryDisplayName</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row filter-bottom-row">
+                                                    <div class="form-group col-12">
+                                                        <button class="btn btn-secondary" id="searchBtn">SEARCH</button>
+                                                    </div>
+                                                    <div class="form-group col-12">
+                                                        <a href="/search" class="clear-filters">CLEAR FILTERS</a>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(String.IsNullOrEmpty(Model.Query))
+                            {                    
+                                <strong class="no-results-found-mobile" style="margin-top: 10px; display: none;">Click the "Search Filter" button above to search the site using the filters.</strong>
+                            }
+                            else if(Model.Items.Count() <= 0)
+                            {
+                                <strong class="no-results-found-mobile" style="margin-top: 10px; font-style: italic; display: none;">No results found for '@Model.Query' and selected category. Please adjust your search. </strong>
+                            }
+                            @if (Model.TotalPages > 1)
+                            {
+                                <div class="col-12">
+                                    <div class="pagination-wrapper">
+                                        <ul class="pagination">
+                                            @if (Model.CurrentPage != 1)
+                                            {
+                                                <li class="pagination-item previous">
+                                                    <a href="@currentPageAlias?searchText=@Model.Query&pageNumber=@(Model.CurrentPage - 1)"
+                                                        aria-label="previous">@Html.Raw("<<")
+                                                        </a>
+                                                </li>
+                                            }
+                                            @for (int i = Model.StartingPage; i <= Model.EndingPage; i++)
+                                            {
+                                                var isActive = (i == Model.CurrentPage) ? "active" : "";
+                                                <li class="pagination-item @isActive">
+                                                    <a href="@currentPageAlias?searchText=@Model.Query&pageNumber=@i" aria-label="Go to page @i">@i</a>
+                                                </li>
+                                            }
+                                            @if (Model.CurrentPage != Model.EndingPage)
+                                            {
+                                                <li class="pagination-item next">
+                                                    <a href="@currentPageAlias?searchText=@Model.Query&pageNumber=@(Model.CurrentPage + 1)"
+                                                        aria-label="next">@Html.Raw(">>")</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    defer(function () {
+        $('#keywordsInput').keyup(function (e) {
+            if (e.keyCode === 13) {
+                $('#searchBtn').click();
+            }
+        });
+
+        $('#searchBtn').click(function (event) {
+            event.preventDefault();
+
+            var value = $('#keywordsInput').val().trim();
+            var categoryId = $('#categoryInput').val();
+
+            if (value) {
+                var redirectUrl = '@currentPageAlias?searchText=' + value + "&categoryId=" + categoryId;
+                location.href = redirectUrl;
+            }
+        });
+    });
+</script>

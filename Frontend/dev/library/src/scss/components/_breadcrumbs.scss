@@ -1,0 +1,38 @@
+.breadcrumbs {
+    margin: 54px 0px;
+
+    @include media-breakpoint-down(lg) {
+        margin-top: -25px;
+    }
+
+    > .container {
+        padding-top: 2.875rem;
+    }
+
+    a, span {
+        @include font-size(12);
+        @include line-height(14);
+        color: $primary;
+    }
+
+    a {
+        padding-right: 20px;
+        margin-right: 12px;
+        position: relative;
+
+        &::after {
+            content: '.';
+            color: $primary;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 0;
+            display: inline-block;
+        }
+    }
+
+    span {
+        font-weight: 700;
+    }
+    & + .widget-wrapper .back-arrow { margin-top: 0; }
+}

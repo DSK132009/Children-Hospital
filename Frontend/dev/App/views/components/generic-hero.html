@@ -1,0 +1,51 @@
+<section aria-label="Generic Hero" class="generic-hero lazy-load-bg" data-mobile-src="/library/img/image-callout.png" data-desktop-src="/library/img/generic-hero.png" style="background-image: url('/library/img/generic-hero.png');">
+
+    <div class="generic-hero-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    {% if innerHero == null %}
+                    <h1>UMC Nevada's <strong>only</strong> level 1 pediatric hospital, burn center and level II trauma center</h1>
+                    {% endif %}
+                    {% if innerHero == true %}     
+                    <h1 class="hero-header-divide">{{ heroHeader }}</h1>
+                    <p>Care On Your Time Schedule</p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4">
+                    <div class="generic-hero-ctas">
+                        <a href="#" aria-label="Parking at UMC">
+                            <svg>
+                                <use xlink:href="/library/img/icons.svg#parking"></use>
+                            </svg>
+                            <span>Parking <br /> at UMC</span>
+                        </a>
+                        <a href="#" aria-label="Facility maps of UMC">
+                            <svg>
+                                <use xlink:href="/library/img/icons.svg#facility-maps"></use>
+                            </svg>
+                            <span>Facility maps of UMC</span>
+                        </a>
+                        
+                        <a href="#" aria-label="Travel to UMC">
+                            <svg>
+                                <use xlink:href="/library/img/icons.svg#travel"></use>
+                            </svg>
+                            <span>Travel to UMC</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="generic-hero-footer">
+        <div class="container-fluid">
+            <a href="#" aria-label="Pay Your Bill">
+                <svg>
+                    <use xlink:href="/library/img/icons.svg#pay"></use>
+                </svg>
+                <span>Pay Your Bill</span>
+            </a>
+        </div>
+    </div>
+</section>

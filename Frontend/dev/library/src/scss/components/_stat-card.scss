@@ -1,0 +1,57 @@
+.stat-cards {
+  &.less-than-5 .slick-dots { display: none; }
+
+  @include media-breakpoint-down(md) {
+      &.less-than-5 .slick-dots { display: flex; }
+  }
+}
+.card.stat-card {
+  border: none;
+  text-align: center;
+
+  .card-body {
+      padding: 0;
+  }
+
+  .card-title {
+      @include font-size(60);
+      @include line-height(60);
+      font-weight: 300;
+      color: $secondary;
+  }
+
+  hr {
+      margin: 19px auto 30px;
+      width: 45px;
+      height: 2px;
+      background-color: $tertiary;
+  }
+
+  .card-text {
+      @include font-size(16);
+      @include line-height(22);
+      text-transform: uppercase;
+
+      p {
+          margin-bottom: 5px;
+      }
+  }
+
+  @include media-breakpoint-down(lg) {
+      .card-title {
+          @include font-size(40);
+          @include line-height(40);
+      }
+  }
+
+  @include media-breakpoint-down(md) {
+
+      hr {
+          margin: 3px auto 15px;
+      }
+
+      .card-text {
+          @include line-height(19);
+      }
+  }
+}

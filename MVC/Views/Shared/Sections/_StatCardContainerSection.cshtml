@@ -1,0 +1,16 @@
+﻿@using Kentico.PageBuilder.Web.Mvc
+@using Kentico.Web.Mvc
+@using Kentico.Forms.Web.Mvc;
+@using Kentico.Components.Web.Mvc.FormComponents;
+
+@{
+    var widgetWhitelist = new[] { "UMCHospital.Widgets.StatCard" };
+}
+
+<div class="widget-wrapper">
+    <div class="container">
+        <div class="stat-cards">
+            @await Html.Kentico().WidgetZoneAsync(allowedWidgets: widgetWhitelist)
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+﻿@model ComponentViewModel<MVC.Models.Sections.VideoContainer.VideoContainerSectionProperties>
+
+@{
+    var widgetWhitelist = new[] { "UMCHospital.Widgets.Video" };
+}
+
+<div class="widget-wrapper">
+    <section class="video-section" aria-label="video section">
+        <div class="container">
+            <h2 class="headline">@Html.Raw(Model.Properties.Heading)</h2>
+            <div class="fr-view">
+                @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.Description))
+            </div>
+            <div class="video-layout">
+                @await Html.Kentico().WidgetZoneAsync(allowedWidgets: widgetWhitelist)
+            </div>
+        </div>
+    </section>
+</div>

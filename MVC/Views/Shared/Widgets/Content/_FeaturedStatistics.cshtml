@@ -1,0 +1,54 @@
+﻿@using Kentico.PageBuilder.Web.Mvc
+
+@model ComponentViewModel<MVC.Models.Widgets.Content.FeaturedStatistics.FeaturedStatisticsProperties>
+
+@inject XperienceAdapter.Repositories.IMediaFileRepository MediaFileRespository
+
+@{ 
+    var image = "";
+
+    if ((Model?.Properties?.Image?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.Image.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            image = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+}
+
+<div class="widget-wrapper">
+    <section class="figures-achievements-section" aria-label="Section for figures and achievements">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="figures-col">
+                        @if (!string.IsNullOrWhiteSpace(Model.Properties.HeadingOne))
+                        {
+                            <div class="figure">
+                                <p class="title">@Model.Properties.HeadingOne</p>
+                                <p class="subtitle">@Model.Properties.SubTitleOne</p>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.Properties.HeadingTwo))
+                        {
+                            <div class="figure">
+                                <p class="title">@Model.Properties.HeadingTwo</p>
+                                <p class="subtitle">@Model.Properties.SubTitleTwo</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(image))
+                { 
+                <div class="col-12 col-lg-6 px-0 px-sm-3">
+                    <div class="img-col">
+                        <img class="img-load-lazy" src="@image" data-src="@image" alt="@Model.Properties.ImageAltText" data-srcset="@image" />
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>

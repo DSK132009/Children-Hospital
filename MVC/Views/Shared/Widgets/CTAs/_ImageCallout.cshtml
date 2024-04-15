@@ -1,0 +1,49 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.CTA.ImageCallout.ImageCalloutProperties>
+
+@inject XperienceAdapter.Repositories.IMediaFileRepository MediaFileRespository
+
+@{
+    var alignment = Model.Properties.AlignLeft ? "image-callout-left" : "";
+    var target = Model.Properties.OpenNewTab ? "_blank" : "_self";
+    var image = "";
+
+    if ((Model?.Properties?.Image?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.Image.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            image = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+}
+<div class="widget-wrapper">
+    <div class="image-callout @alignment">
+        <div class="container">
+            <div class="image-callout-content">
+                <h2 style="@Html.Raw(Model.Properties.HeadingColor)">@Model.Properties.Heading</h2>
+                
+                @if (Context.Kentico().PageBuilder().EditMode)
+                {
+                    <div style="border: solid; box-sizing: border-box; padding: 10px; border-color: black; padding-bottom: 20px;">
+                        @{ Html.Kentico().RichTextEditor(nameof(Model.Properties.Text)); }
+                    </div>
+                }
+                else
+                {
+                    <div class="fr-view">
+                        @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.Text))
+                    </div>
+                }
+
+                <img class="img-load-lazy" src="@image" data-src="@image" alt="@Model.Properties.ImageAltText" data-srcset="@image" />
+                @if (!string.IsNullOrWhiteSpace(Model.Properties.ButtonUrl))
+                {
+                    <a class="btn btn-secondary" href="@Model.Properties.ButtonUrl" target="@target" aria-label="@Model.Properties.ButtonAriaLabel">
+                        @Model.Properties.ButtonText
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

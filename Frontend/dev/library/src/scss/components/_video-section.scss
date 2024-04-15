@@ -1,0 +1,74 @@
+.video-section {
+
+    .container-fluid, .video-layout, .slick-list, .slick-track, .slick-slide, .video-card-embed { position: static !important }
+
+    .video-layout {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+
+        .slick-track {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            
+
+            &.modal-open {
+                transform: none !important;
+            }
+        }
+
+        .slick-list {
+            &.modal-open {
+                transform: none !important;
+            }
+        }
+    }
+
+    .video-card {
+        margin: 30px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        flex-basis: 25%;
+        min-width: 40%;    
+
+        .h5 {
+            margin-top: 25px;
+        }
+
+        &-body {
+            width: 100%;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+
+        .container-fluid, .video-layout, .slick-list, .slick-track, .slick-slide, .video-card-embed { position: relative !important }
+        .video-layout {
+            display: block;
+
+            .slick-track {
+                display: block;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                // transform: initial !important;
+            }
+    
+            .slick-list {
+                // transform: initial !important;
+            }
+        }
+
+        .video-card {
+            margin: 0;
+            display: block;
+            min-width: auto;
+        }
+    }
+}

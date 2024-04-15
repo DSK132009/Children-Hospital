@@ -1,0 +1,57 @@
+.card.news-card {
+    border: none;
+    text-align: left;
+    height: auto;
+
+    &.slick-slide {
+        padding: 0 1rem;
+        margin: 0 auto;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        height: 100%;
+        padding: 0;
+    }
+
+    .card-title {
+        margin: 0;
+
+        .h5 {
+            line-height: 1;
+            color: $black;
+            margin: 0;
+            color: $htag-color;
+        }
+    }
+
+    .card-text {
+        margin-top: 17px;
+        margin-bottom: auto;
+    }
+
+    .card-link {
+        @include font-size(22);
+        @include line-height(25);
+        color: #00509F;
+        font-weight: 900;
+        text-transform: uppercase;
+        text-decoration: none;
+        margin-top: 30px;
+
+        &:hover, &:focus {
+            text-decoration: underline;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 10px;
+
+        .card-link {
+            @include font-size(18);
+            @include line-height(21);
+        }
+    }
+}

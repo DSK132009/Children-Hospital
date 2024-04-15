@@ -1,0 +1,190 @@
+html,
+body {
+  position: relative;
+}
+html {
+  max-width: 100%;
+  -webkit-text-size-adjust: none;
+
+  &.text-large {
+    font-size: 110%;
+  }
+
+  &.text-larger {
+    font-size: 125%;
+  }
+
+  &.text-largest {
+    font-size: 150%;
+  }
+}
+body {
+  font-family: $primary-font;
+  color: $base-font-color;
+  background: #fff;
+  @include font-size($base-font-size);
+  @include line-height(22);
+}
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: $htag-font;
+  color: $htag-color;
+  font-weight: 700;
+  line-height: 1.2;
+}
+h1,
+.h1 {
+  @include font-size(40);
+  color: $white;
+}
+h2,
+.h2 {
+  @include font-size(36);
+}
+h3,
+.h3 {
+  @include font-size(36);
+  font-weight: 400;
+}
+h4,
+.h4 {
+  @include font-size(28);
+  color: $white;
+  font-weight: 400;
+}
+h5,
+.h5 {
+  @include font-size(30);
+}
+h6,
+.h6 {
+  @include font-size(16);
+  color: $quaternary;
+}
+.widget-wrapper {
+  h1,
+  h4 {
+    color: $htag-color;
+  }
+}
+// Custom style heading with two tone border
+.headline {
+  padding-bottom: 35px;
+  border-bottom: 2px solid #01254E;
+  position: relative;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #01254E;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: -29px;
+    background-color: $tertiary;
+    height: 2px;
+    width: 270px;
+  }
+
+  span {
+    @include font-size(16);
+    @include line-height(22);
+    text-transform: none;
+    position: absolute;
+    right: 0;
+    top: 12px;
+  }
+}
+
+// Custom style heading, white text with green border
+.headline-alt {
+  padding-bottom: 7px;
+  border-bottom: 1px solid $tertiary;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: $white;
+  margin-bottom: 11px;
+}
+
+img {
+  max-width: 100%;
+}
+a {
+  color: $link-color;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: $link-hover;
+    text-decoration: none;
+  }
+}
+p {
+  @include font-size(16);
+  @include line-height(22);
+  margin-bottom: 10px;
+}
+
+@include media-breakpoint-down(md) {
+  body {
+    line-height: 22px;
+  }
+  h1,
+  .h1 {
+    @include font-size(34);
+  }
+  h2,
+  .h2 {
+    @include font-size(30);
+  }
+  h3,
+  .h3 {
+    @include font-size(30);
+  }
+  h4,
+  .h4 {
+    @include font-size(24);
+  }
+  h5,
+  .h5 {
+    @include font-size(22);
+  }
+  h6,
+  .h6 {
+    @include font-size(14);
+    font-weight: 400;
+  }
+
+  .headline {
+    padding-bottom: 13px;
+
+    &::after {
+      left: 0;
+      width: 90px;
+    }
+
+    span {
+      @include font-size(16);
+      @include line-height(22);
+      text-transform: none;
+      position: absolute;
+      right: 0;
+      top: -25px;
+    }
+  }
+}

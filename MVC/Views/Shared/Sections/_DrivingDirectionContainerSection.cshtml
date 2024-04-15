@@ -1,0 +1,24 @@
+﻿@model ComponentViewModel<MVC.Models.Sections.DrivingDirectionContainer.DrivingDirectionContainerSectionProperties>
+
+@{
+    var target = Model.Properties.OpenNewTab ? "_blank" : "_self";
+    var widgetWhitelist = new[] { "UMCHospital.Widgets.DrivingDirection" };
+ }
+<div class="widget-wrapper">
+    <section class="directions-to-section" aria-label="@Model.Properties.Heading">
+        <div class="container">
+            <h2 class="headline">@Html.Raw(Model.Properties.Heading)</h2>
+            <div class="content-section row">
+                @await Html.Kentico().WidgetZoneAsync(allowedWidgets: widgetWhitelist)
+            </div>
+            @if (!string.IsNullOrWhiteSpace(Model.Properties.Url))
+            {
+                <div class="col-12">
+                    <div class="bottom-cta">
+                        <a class="btn btn-secondary" href="@Model.Properties.Url" aria-label="@Model.Properties.AriaLabel" target="@target">@Model.Properties.Text</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</div>

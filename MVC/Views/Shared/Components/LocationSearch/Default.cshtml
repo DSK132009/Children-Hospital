@@ -1,0 +1,175 @@
+﻿@model MVC.Models.Locations.LocationSearchModel
+
+@using CMS.DataEngine
+
+@{ 
+    var quickCareLocations = Model.Locations.Where(x => x.LocationType == "Quick Care").OrderBy(y => y.LocationOrder);
+    var primaryCareLocations = Model.Locations.Where(x => x.LocationType == "Primary Care").OrderBy(y => y.LocationOrder);
+}
+
+<!-- Filter for quick and primary care, and radius search -->
+<div class="widget-wrapper">
+    <section class="umc-care-filter" aria-label="Filter for UMC Quick and Primary Care Clinics">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="" class="umc-care-filter-form">
+                        <div class="form-row">
+                            <div class="form-group col-12 col-lg-6">
+                                <label for="checkboxInput">SEARCH BY: </label>
+                                <div class="checkbox-wrapper">
+                                    <div class="form-check">
+                                        <input class="form-check-input @((String.IsNullOrEmpty(Model.DefaultFilterOption) || Model.DefaultFilterOption == "quickprimarycare") ? "active" : "")" type="checkbox" id="allCare" value="all">
+                                        <label class="form-check-label" for="allCare">
+                                            QUICK &amp; PRIMARY CARE
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input @(Model.DefaultFilterOption == "quickcare" ? "active" : "")" type="checkbox" id="quickCare" value="quick-care">
+                                        <label class="form-check-label" for="quickCare">
+                                            QUICK CARE
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input @(Model.DefaultFilterOption == "primarycare" ? "active" : "")" type="checkbox" id="primaryCare" value="primary-care">
+                                        <label class="form-check-label" for="primaryCare">
+                                            PRIMARY CARE
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="widget-wrapper">
+    <section class="clinic-location-list QUICK-list @((String.IsNullOrEmpty(Model.DefaultFilterOption) || Model.DefaultFilterOption == "quickprimarycare" || Model.DefaultFilterOption == "quickcare") ? "d-block" : "d-none")" aria-label="list of QUICK clinic locations" data-type="QUICK">
+        <div class="container">
+            <h2 class="headline"><strong>QUICK</strong> Care</h2>
+            <div class="row">
+                <div class="container">
+                    <h3 id="quick-care-no-results" style="display: none;">No Quick Care results found for selected filters.</h3>    
+                </div>
+                @foreach (var quickCareLocation in quickCareLocations)
+                {
+                    var hourSets = Model.LocationsHourSets.Where(x => x.SetParentId == quickCareLocation.LocationID)
+                        .OrderBy(y => y.SetOrder);
+
+                    <div class="col-12 col-lg-4">
+                        <article class="card location-card" aria-label="@quickCareLocation.LocationName info card" data-lat="@quickCareLocation.Latitude" data-lng="@quickCareLocation.Longitude" data-zip="@quickCareLocation.Zip" data-type="quick-care">
+                            <div class="card-img">
+                                <img class="" data-src="@quickCareLocation.LocationImage" alt="@quickCareLocation.LocationImageAltText" data-srcset="@quickCareLocation.LocationImage" src="@quickCareLocation.LocationImage" srcset="@quickCareLocation.LocationImage">
+                            </div>
+                            <div class="card-content">
+                                <a href="https://www.google.com/maps/search/?api=1&query=@quickCareLocation.LocationName" class="title" target="_blank" aria-label="google maps directions to @quickCareLocation.LocationName">@quickCareLocation.LocationName</a>
+                                <p class="address-1">@quickCareLocation.StreetAddress</p>
+                                @if (!string.IsNullOrWhiteSpace(quickCareLocation.StreetAddress2))
+                                {
+                                    <p class="address-1">@quickCareLocation.StreetAddress2</p>
+                                }
+                                <p class="address-2">@quickCareLocation.City, @quickCareLocation.State @quickCareLocation.Zip</p>
+                                <p class="phone">@quickCareLocation.Phone</p>
+                            </div>
+                            @foreach (var hourSet in hourSets)
+                            {
+                                var hours = Model.LocationHours.Where(x => x.HourParentId == hourSet.LocationsHourSetID)
+                                    .OrderBy(y => y.HourOrder);
+
+                                <div class="card-footer">
+                                    <strong>@hourSet.SetDisplayName.ToUpper() HOURS: </strong>
+
+                                    @foreach (var hour in hours)
+                                    {
+                                        if (hour.StartDay == "7Days")
+                                        {
+                                            <p>7 Days a Week</p>
+                                        }
+
+                                        else if (hour.StartDay != hour.EndDay)
+                                        {
+                                            <p>@hour.StartDay - @hour.EndDay</p>
+                                        }
+                                        else
+                                        {
+                                            <p>@hour.StartDay</p>
+                                        }
+                                        <p>@hour.OpenTime.ToString("hh:mm tt") - @hour.CloseTime.ToString("hh:mm tt")</p>
+                                    }
+                                </div>
+                            }
+                        </article>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="widget-wrapper">
+    <section class="clinic-location-list PRIMARY-list @((String.IsNullOrEmpty(Model.DefaultFilterOption) || Model.DefaultFilterOption == "quickprimarycare" || Model.DefaultFilterOption == "primarycare") ? "d-block" : "d-none")" aria-label="list of PRIMARY clinic locations" data-type="PRIMARY">
+        <div class="container">
+            <h2 class="headline"><strong>PRIMARY</strong> Care</h2>
+            <div class="row">
+                <div class="container">
+                    <h3 id="primary-care-no-results" style="display: none;">No Primary Care results found for your entered zip code.</h3>
+                </div>
+                @foreach (var primaryCareLocation in primaryCareLocations)
+                {
+                    var hourSets = Model.LocationsHourSets.Where(x => x.SetParentId == primaryCareLocation.LocationID)
+                        .OrderBy(y => y.SetOrder);
+
+                    <div class="col-12 col-lg-4">
+                        <article class="card location-card" aria-label="@primaryCareLocation.LocationName info card" data-lat="@primaryCareLocation.Latitude" data-lng="@primaryCareLocation.Longitude" data-zip="@primaryCareLocation.Zip" data-type="primary-care">
+                            <div class="card-img">
+                                <img class="" data-src="@primaryCareLocation.LocationImage" alt="@primaryCareLocation.LocationImageAltText" data-srcset="@primaryCareLocation.LocationImage" src="@primaryCareLocation.LocationImage" srcset="@primaryCareLocation.LocationImage">
+                            </div>
+                            <div class="card-content">
+                                <a href="https://www.google.com/maps/search/?api=1&query=@primaryCareLocation.Latitude,@primaryCareLocation.Longitude" class="title" aria-label="google maps directions to @primaryCareLocation.LocationName">@primaryCareLocation.LocationName</a>
+                                <p class="address-1">@primaryCareLocation.StreetAddress</p>
+                                @if (!string.IsNullOrWhiteSpace(primaryCareLocation.StreetAddress2))
+                                {
+                                    <p class="address-1">@primaryCareLocation.StreetAddress2</p>
+                                }
+                                <p class="address-2">@primaryCareLocation.City, @primaryCareLocation.State @primaryCareLocation.Zip</p>
+                                <p class="phone">@primaryCareLocation.Phone</p>
+                            </div>
+                            @foreach (var hourSet in hourSets)
+                            {
+                                var hours = Model.LocationHours.Where(x => x.HourParentId == hourSet.LocationsHourSetID)
+                                    .OrderBy(y => y.HourOrder);
+
+                                <div class="card-footer">
+                                    <strong>@hourSet.SetDisplayName.ToUpper() HOURS: </strong>
+                                    @foreach (var hour in hours)
+                                    {
+                                        if (hour.StartDay == "7Days")
+                                        {
+                                            <p>7 Days  Week</p>
+                                        }
+
+                                        else if (hour.StartDay != hour.EndDay)
+                                        {
+                                            <p>@hour.StartDay - @hour.EndDay</p>
+                                        }
+                                        else
+                                        {
+                                            <p>@hour.StartDay</p>
+                                        }
+                                        <p>@hour.OpenTime.ToString("hh:mm tt") - @hour.CloseTime.ToString("hh:mm tt")</p>
+                                    }
+                                </div>
+                            }
+                        </article>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=@SettingsKeyInfoProvider.GetValue("GoogleMapsKey")&callback=locationsReady&libraries=geometry,places,geocoder"></script>

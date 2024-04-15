@@ -1,0 +1,24 @@
+﻿@model MVC.Models.Navigation.NavigationViewModel
+
+<ul class="nav social-nav">
+    @foreach (var socialLink in Model.Links)
+    {
+        var desktopClass = socialLink.IsDesktopOnly ? "desktop-only" : "";        
+
+        <li class="nav-item @desktopClass">
+            <a class="nav-link" href="@socialLink.Url"
+               aria-label="@socialLink.AriaLabel" target="@socialLink.Target">
+                @if (socialLink.IconUrl.Contains('#'))
+                {
+                    <svg>
+                        <use xlink:href="@socialLink.IconUrl"></use>
+                    </svg>
+                }
+                else
+                {
+                    <img src="@socialLink.IconUrl.TrimStart('~')" alt="@socialLink.DisplayText Icon" />
+                }
+            </a>
+        </li>
+     }
+</ul>

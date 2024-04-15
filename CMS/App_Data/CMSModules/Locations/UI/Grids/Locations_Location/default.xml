@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<grid>
+  <actions parameters="LocationID">
+    <action name="edit" caption="$General.Edit$" fonticonclass="icon-edit" fonticonstyle="allow" />
+    <action name="#delete" caption="$General.Delete$" fonticonclass="icon-bin" fonticonstyle="critical" confirmation="$General.ConfirmDelete$" />
+    <action name="#moveup" caption="$General.Up$" fonticonclass="icon-chevron-up" />
+    <action name="#movedown" caption="$General.Down$" fonticonclass="icon-chevron-down" />
+  </actions>
+  <columns>
+    
+    <column source="LocationName" caption="Name" wrap="true" width="300px" />
+    <column source="LocationType" caption="Type" wrap="true"  />
+    <column source="StreetAddress" caption="Street" wrap="true" />
+    <column source="City" caption="City" wrap="true" />
+    <column source="State" caption="State" wrap="true" />
+    <column source="Zip" caption="Zip" wrap="true" />
+  </columns>
+  <options>
+    <key name="DisplayFilter" value="false" />
+    <key name="AllowSorting" value="false" />
+  </options>
+</grid>

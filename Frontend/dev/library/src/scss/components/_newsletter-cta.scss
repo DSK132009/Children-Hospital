@@ -1,0 +1,58 @@
+.newsletter-cta {
+    background-color: $primary;
+    color: $white;
+    padding-top: 30px;
+    padding-bottom: 22px;
+
+    &-content {
+        padding-right: 46px;
+
+        p {
+            @include font-size(14);
+            @include line-height(22);
+        }
+    }
+
+    .form-section {
+        max-width: 730px;
+        min-width: 0;
+        width: calc(100vw * .51);
+        background: transparent;
+        padding: 0;
+
+        small {
+            @include font-size(12);
+            @include line-height(15);
+            max-width: 503px;
+        }
+
+        .btn {
+            float: right;
+            padding-top: 6.5px;
+            padding-bottom: 6.5px;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        background-color: #013061;
+        padding-top: 36px;
+        padding-bottom: 23px;
+
+        &-content {
+            padding-right: 0;
+        }
+
+        &-form {
+            max-width: 100%;
+            width: 100%;
+
+            small {
+                margin-top: 12px;
+            }
+
+            .btn {
+                margin-left: 70%;
+            }
+        }
+    }
+}

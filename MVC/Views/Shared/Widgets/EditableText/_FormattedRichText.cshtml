@@ -1,0 +1,18 @@
+﻿@using Kentico.PageBuilder.Web.Mvc
+
+@model ComponentViewModel<MVC.Models.Widgets.EditableText.FormattedRichText>
+
+<section class="generic-content section-padding">    
+    @if (Context.Kentico().PageBuilder().EditMode)
+    {
+        <div class="container" style="border: solid; border-width: 2px;">
+            @{ Html.Kentico().RichTextEditor(nameof(Model.Properties.HtmlContent)); }
+        </div>
+    }
+    else
+    {
+        <div class="container fr-view">
+            @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.HtmlContent))
+        </div>
+    }
+</section>

@@ -1,0 +1,60 @@
+.pagination {
+  li {
+    @include font-size(18);
+    @include line-height(21);
+    width: 24px;
+    font-weight: 700;
+    color: $tertiary;
+    text-align: center;
+
+    a {
+      text-decoration: none;
+      color: $secondary;
+    }
+  }
+
+  .previous,
+  .next,
+  .active {
+    color: $primary;
+
+    a {
+      text-decoration: underline;
+      color: $primary;
+    }
+  }
+
+  .previous {
+    margin-right: 29px;
+  }
+
+  .next {
+    margin-left: 29px;
+  }
+
+  @include media-breakpoint-down(md) {
+    li {
+      width: 31px;
+      height: 31px;
+      border: 1px solid $primary;
+      margin: 0;
+      padding: 5px 0px;
+
+      a {
+        text-decoration: none;
+      }
+    }
+
+    .previous,
+    .next,
+    .active {
+      margin-right: 0;
+      margin-left: 0;
+      vertical-align: middle;
+
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+}

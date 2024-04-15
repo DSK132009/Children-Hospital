@@ -1,0 +1,44 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.News.LatestNews.NewsListingProperties>
+
+@using CMS.DocumentEngine;
+@using CMS.DocumentEngine.Types.UMCHospital
+
+@{
+    var columns = new string[] { "DocumentName", "NodeAliasPath", "ArticleName", "PublishDate", "ShortSummary", "Headline", "LinkedArticle", "OpenInNewTab" };
+
+    DocumentQuery<Article> articles;
+
+    if(Context.Kentico().PageBuilder().EditMode)
+    {
+        articles = ArticleProvider.GetArticles().Columns(columns).OrderByDescending("PublishDate").TopN(4);
+    }
+    else
+    {
+        articles = ArticleProvider.GetArticles().Columns(columns).OrderByDescending("PublishDate");
+    }
+
+}
+
+<div class="widget-wrapper">
+    <div class="container">
+        <h2 class="headline">@Html.Raw(Model.Properties.HeaderText)</h2>
+        <div class="all-news-articles">
+            @foreach (var article in articles)
+            {
+                <article class="card news-card" aria-label="@article.Headline">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3 class="h5">@article.Headline</h3>
+                        </div>
+                        <p class="card-text">@article.ShortSummary</p>
+                        <a href="@(!string.IsNullOrEmpty(article.LinkedArticle)? article.LinkedArticle : article.NodeAliasPath)" target="@(article.OpenInNewTab ? "_blank" : "")" class="card-link" aria-label="Learn more about @article.Headline">Learn More</a>
+                    </div>
+                </article>
+            }
+
+            <div class="load-more-wrapper text-center">
+                <button class="btn btn-secondary load-more-btn" aria-label="Load more news articles">@Model.Properties.LoadMoreText</button>
+            </div>
+        </div>
+    </div>    
+</div>

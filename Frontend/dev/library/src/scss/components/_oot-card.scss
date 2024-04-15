@@ -1,0 +1,61 @@
+.oot-card {
+    display: flex;
+    margin-bottom: 42px;
+
+    img, svg {
+        min-width: 79px;
+        min-height: 79px;
+        max-height: 79px;
+        width: 79px;
+        height: 79px;
+        margin: auto 61px auto 0px;
+    }
+
+    .card-content {
+        padding-left: 85px;
+        border-left: 1px solid $tertiary;
+        
+        h6 {
+            @include font-size(22);
+            @include line-height(25);
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        span {
+            font-weight: 700;
+            margin-right: 16px;
+        }
+
+        a {
+            font-weight: bold;
+            color: #00509F;
+            text-decoration: underline;
+
+            &:hover, &:focus {
+                text-decoration: none;
+            }
+        }
+
+        p:last-child {
+            margin-top: 10px;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        
+        img, svg {
+            min-width: 40px;
+            min-height: 40px;
+            max-height: 40px;
+            margin: 0;
+            padding-right: 12px;
+            border-right: 1px solid $tertiary;
+        }
+
+        .card-content {
+            padding-left: 18px;
+            border-left: none
+        }
+    }
+}

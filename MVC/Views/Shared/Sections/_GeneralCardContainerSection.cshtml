@@ -1,0 +1,13 @@
+﻿@model ComponentViewModel<MVC.Models.Sections.GeneralCardContainer.GeneralCardContainerSectionProperties>
+
+@{
+    var widgetWhitelist = new[] { "UMCHospital.Widgets.GeneralCard" };
+}
+
+<div class="widget-wrapper">
+    <div class="container">
+        <div class="row">
+            @await Html.Kentico().WidgetZoneAsync(allowedWidgets: widgetWhitelist)
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+{% set pageTitle="Travel To UMC" %}
+{% extends "../MasterPages/master.html" %}
+
+{% block content %}
+
+	{% set hasDivider = true %}
+    {% set innerHero = true %}
+	{% set heroHeader = 'Travel to UMC' %}
+
+	{% include "../views/components/generic-hero.html" %}
+    {% include "../views/shared/breadcrumbs.html" %}
+
+    <div class="widget-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="map-image">
+                        <img class="img-load-lazy" data-src="https://picsum.photos/1200/600" alt="image placeholder for video" data-srcset="https://picsum.photos/1200/600" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% include "../views/components/directions-to.html" %}
+
+    <div class="widget-wrapper">
+        <section class="featured-content-section" aria-label="Featured Content Section">
+            <div class="container">
+                <h2 class="headline">QUICK & PRIMARY CARE</h2>
+                <div class="content-section row">
+                    <div class="col-12">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <a href="#" aria-label="learn more about Quick and Primary Care" class="btn btn-secondary mt-4">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include "../views/components/out-of-town.html" %}
+	
+{% endblock %}

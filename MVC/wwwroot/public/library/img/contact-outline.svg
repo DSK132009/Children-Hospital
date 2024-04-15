@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+  <g id="Group_124" data-name="Group 124" transform="translate(-161 -1)">
+    <circle id="Oval" cx="16" cy="16" r="16" transform="translate(162 2)" fill="none" stroke="#002f5e" stroke-width="2"/>
+    <g id="phone-alt-solid" transform="translate(168 8)">
+      <path id="Path" d="M19.43,14.133l-4.375-1.875a.938.938,0,0,0-1.094.27l-1.938,2.367A14.479,14.479,0,0,1,5.1,7.973L7.469,6.035a.935.935,0,0,0,.27-1.094L5.863.567A.944.944,0,0,0,4.789.024L.727.961A.938.938,0,0,0,0,1.875,18.123,18.123,0,0,0,18.125,20a.938.938,0,0,0,.914-.727l.938-4.063a.949.949,0,0,0-.547-1.078Z" fill="#01254e"/>
+    </g>
+  </g>
+</svg>

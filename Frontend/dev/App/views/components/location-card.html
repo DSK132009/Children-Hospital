@@ -1,0 +1,13 @@
+<article class="card location-card" aria-label="{{ locationTitle }} info card" data-lat="{{ locationLat }}"" data-lng="{{ locationLng }}" data-type="{{ locationType }}">
+    <div class="card-img">
+        <img class="img-load-lazy" data-src="{{ locationImg }}" alt="Airplane icon" data-srcset="{{ locationImg }}" />
+    </div>
+    <div class="card-content">
+        <a href="#" class="title" aria-label="google maps directions to {{ locationTitle }}">{{ locationTitle }}</a>
+        <p class="address">{{ locationAddress }}</p>
+        <p class="phone">{{ locationPhone }}</p>
+        <strong>HOURS: </strong>
+        <p>{{ locationDays }}</p>
+        <p>{{ locationHours }}</p>
+    </div>
+</article>

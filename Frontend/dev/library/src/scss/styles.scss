@@ -1,0 +1,107 @@
+@import 'base/mixins';
+@import 'vendor/bootstrap/bootstrap';
+@import 'theme';
+@import 'vendor/slick';
+@import 'vendor/slick-theme';
+
+// vendor-overrides
+@import 'vendor/vendor-overrides/slick-theme';
+@import 'vendor/vendor-overrides/datepicker-override';
+
+// base
+@import 'base/buttons';
+@import 'base/custom-selectboxes';
+@import 'base/custom-radioboxes';
+@import 'base/forms';
+@import 'base/helpers';
+@import 'base/tables';
+@import 'base/typography';
+
+// layouts
+@import 'layout/frontend-template-list';
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/mobile-quick-links';
+
+// Pages
+
+// Components
+
+@import 'components/form-section';
+@import 'components/generic-hero';
+@import 'components/icon-callout';
+@import 'components/image-callout';
+@import 'components/stat-card';
+@import 'components/latest-news-articles';
+@import 'components/media-info-news';
+@import 'components/news-card';
+@import 'components/generic-alert';
+@import 'components/newsletter-cta';
+@import 'components/quick-care-locator';
+@import 'components/breadcrumbs';
+@import 'components/quick-nav-section';
+@import 'components/_featured-content';
+@import 'components/team-members';
+@import 'components/figures-achievements';
+@import 'components/donor-registration';
+@import 'components/video-embed';
+@import 'components/video-section';
+@import 'components/back-widget';
+@import 'components/doctor-bio-section';
+@import 'components/directions-to';
+@import 'components/out-of-town';
+@import 'components/oot-card';
+@import 'components/popular-search';
+@import 'components/search-results-section';
+@import 'components/services-banner';
+@import 'components/pagination';
+@import 'components/class-layout';
+@import 'components/general-card';
+@import 'components/umc-care-filter';
+@import 'components/location-card';
+@import 'components/clinic-location-list';
+@import 'components/register-for-event';
+@import 'components/search-events';
+@import "components/all-news";
+
+.page-wrapper {
+  // Offset fixed header
+  margin-top: 143px;
+
+  @include media-breakpoint-down(lg) {
+    margin-top: 52px;
+  }
+}
+
+.widget-wrapper {
+  margin-top: 52.5px;
+  margin-bottom: 52.5px;
+
+  @include media-breakpoint-down(md) {
+    margin-top: 23px;
+    margin-bottom: 23px;
+  }
+}
+
+.container {
+  @include media-breakpoint-up(xl) {
+    max-width: 1440px;
+  }
+}
+
+.container,
+.container-fluid {
+  padding-left: 110px;
+  padding-right: 110px;
+
+  @include media-breakpoint-down(md) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+.map-image {
+  img {
+    width: 100%;
+  }
+}

@@ -1,0 +1,22 @@
+{% set pageTitle="Inner" %}
+{% extends "../MasterPages/master.html" %}
+
+{% block content %}
+
+	{% set innerHero = true %}
+	{% set heroHeader = 'UMC PATIENTS' %}
+	
+	{% include "../views/components/generic-hero.html" %}
+	{% include "../views/shared/breadcrumbs.html" %}
+    {% include "../views/components/quick-nav.html" %}
+	
+    
+    {% set backgroundImage = '/library/img/image-callout.png' %}
+	
+	{% include "../views/components/team-members.html" %}
+
+    {% include "../views/components/video-section.html" %}
+
+	{% include "../views/components/newsletter-cta.html" %}
+
+{% endblock %}

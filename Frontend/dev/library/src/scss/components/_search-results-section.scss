@@ -1,0 +1,261 @@
+.search-results-section {
+  margin-top: -50px;
+
+  .headline {
+    font-weight: 700;
+    @include font-size(22);
+    @include line-height(25);
+    letter-spacing: -0.4px;
+
+    &::after {
+      left: 0;
+    }
+
+    span {
+      font-weight: 400;
+      @include font-size(22);
+      @include line-height(25);
+      letter-spacing: -0.4px;
+      position: relative;
+      top: 0;
+    }
+  }
+
+  .displayed-results {
+    margin-top: 11px;
+    margin-bottom: 60px;
+    color: #000;
+    @include font-size(16);
+    @include line-height(19);
+    letter-spacing: -0.17px;
+    opacity: 0.66;
+  }
+
+  .search-result {
+    margin-bottom: 37px;
+    margin-left: -15px;
+    border-bottom: 1px solid #000;
+
+    a {
+      @include font-size(22);
+      @include line-height(25);
+      color: $primary;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    p {
+      padding: 21px 0px;
+      color: $light-font-color;
+    }
+  }
+
+  .search-filter {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background: $primary;
+    padding: 67px 20px;
+    margin-left: 87px;
+
+    .search-filter-text {
+      text-transform: uppercase;
+      font-size: 18px;
+      line-height: 21px;
+      font-weight: 700;
+      border-bottom: 3px solid #00FC9F;
+      width: 223px;
+      max-width: 100%;
+      padding-bottom: 0.3rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .dropdown-menu {
+      display: block;
+      position: relative;
+      float: none;
+      background: transparent;
+      top: 0;
+      border: none;
+    }
+
+    .title {
+      font-weight: 700;
+      @include font-size(18);
+      @include line-height(21);
+      color: #fff;
+      border: none;
+      border-bottom: 3px solid $tertiary;
+      margin-bottom: 50px;
+      padding: 0;
+      padding-bottom: 5px;
+      width: 50%;
+      background: transparent;
+      text-align: left;
+      pointer-events: none;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    .search-filter-form .form-row {
+      .form-group {
+        margin-bottom: 28px;
+      }
+
+      label {
+        @include font-size(18);
+        @include line-height(21);
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0.65px;
+      }
+
+      input,
+      select {
+        background-color: $primary;
+        color: #fff;
+        border: 1px solid #fff;
+        padding: 11.5px 15px;
+        min-height: 48px;
+
+        &::placeholder {
+          color: #fff;
+        }
+      }
+      select {
+        background-image: url(/library/img/arrowDownWhite.svg);
+      }
+
+      &.filter-bottom-row {
+        .form-group {
+          margin-top: 14px;
+          margin-bottom: 0;
+          text-align: right;
+        }
+      }
+    }
+
+    .btn {
+      @include font-size(18);
+      @include line-height(21);
+      letter-spacing: 0.07px;
+      min-width: 170px;
+      min-height: 50px;
+    }
+
+    .clear-filters {
+      border: none;
+      background: none;
+      color: #fff;
+      text-decoration: underline;
+      @include font-size(16);
+      @include line-height(19);
+      letter-spacing: 0.06px;
+      font-weight: 400;
+    }
+
+    .popular-search-list {
+      display: block;
+      margin-top: 55px;
+
+      .title {
+        width: 75%;
+        margin-bottom: 11px;
+      }
+
+      ul {
+        max-height: 100%;
+        height: 100%;
+
+        li {
+          a {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .pagination-wrapper {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @include media-breakpoint-down(lg) {
+    margin-top: -25px; 
+    
+    .search-filter {
+      margin-left: 0;
+
+      .search-filter-text {
+        display: none;
+      }
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    .container > .row > .col-12 {
+      padding: 0;
+    }
+
+    .headline {
+      margin: 0px 15px;
+    }
+
+    .col-lg-5 {
+      padding: 0;
+      order: -1;
+    }
+
+    .displayed-results {
+      margin: 11px 15px 22px;
+    }
+
+    .search-filter {
+      margin-left: 0;
+      width: 100%;
+      padding: 9px 14px;
+      margin-bottom: 23px;
+
+      .title {
+        border: 3px solid #fff;
+        margin-bottom: 0;
+        width: 100%;
+        padding: 11px;
+        text-align: center;
+        @include font-size(13);
+        @include line-height(16);
+        letter-spacing: 0.65px;
+        pointer-events: initial;
+      }
+
+      .dropdown-menu {
+        margin-top: 19px;
+        position: relative;
+        display: none;
+        float: none;
+
+        &.show {
+          display: block;
+        }
+      }
+
+      .search-filter-form {
+        .form-row {
+          label {
+            @include font-size(13);
+            @include line-height(16);
+          }
+
+          input,
+          select {
+            @include font-size(13);
+            @include line-height(16);
+          }
+        }
+      }
+    }
+  }
+}

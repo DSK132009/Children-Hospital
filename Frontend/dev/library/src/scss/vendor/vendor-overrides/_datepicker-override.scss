@@ -1,0 +1,11 @@
+.ui-datepicker {
+    margin-top: -146px;
+    background: #FFF;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.5);
+}
+
+
+
+@include media-breakpoint-down(md) {
+    .ui-datepicker { margin-top: -52px; }
+}

@@ -1,0 +1,235 @@
+.site-footer {
+	margin-top: 8px;
+
+	.container-fluid {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	&-nav {
+		background-color: $primary;
+		padding: 27px 29px 27px 110px;
+		min-width: calc(100vw * .54);
+		height: 100%;
+		border-right: 1px solid $white;
+
+		.social-nav {
+			margin-bottom: 40px;
+
+			.nav-link {
+				padding: 0 21px;
+
+				svg {
+					@include svg-format(42px, 42px, $white);
+					@include transition(fill .125s ease-in);
+				}
+
+				&:hover, &:focus {
+					svg {
+						fill: $tertiary;
+						@include transition(fill .125s ease-out);
+					}
+				}
+			}
+
+			.nav-item {
+
+				&:first-child {
+
+					.nav-link {
+						padding-left: 0;
+					}
+				}
+			}
+		}
+
+		.link-nav {
+			display: flex;
+			flex-flow: column wrap;
+			height: 120px;
+			max-height: 100%;
+
+			.nav-item {
+				padding: 0;
+				width: calc((100% - 128px) / 3);
+
+				.nav-link {
+					@include font-size(16);
+					@include line-height(27);
+					font-weight: 600;
+					text-decoration: none;
+					letter-spacing: 1.6px;
+					text-transform: uppercase;
+					padding: 0;
+					color: $white;
+					display: inline-block;
+					@include transition(color .125s ease-in);
+
+					&:hover, &:focus {
+						color: $tertiary;
+						@include transition(color .125s ease-out);
+					}
+				}
+			}
+			
+		}
+	}
+
+	&-util-nav {
+		padding: 26px 110px 31px 43px;
+		background-color: #177FFE;
+		border-left: 1px solid $white;
+		height: 100%;
+
+		.util-nav {
+			display: inline-flex;
+			flex-direction: column;
+			
+			@include IE11-only() {
+				flex-basis: 1 0 auto;
+			}
+
+			.nav-item {
+				padding-bottom: 16px;
+
+
+				.nav-link {
+					@include font-size(16);
+					@include line-height(24);
+					font-weight: 700;
+					color: $white;
+					text-decoration: none;		
+					padding: 0;
+					display: flex;
+					align-items: center;
+					@include transition(opacity .125s ease-in);
+
+					svg, img {
+						@include svg-format(40px, 40px, currentColor);
+						margin-right: 16px;
+					}
+
+					&:hover, &:focus {
+						opacity: .75;
+						@include transition(opacity .125s ease-out);
+					}
+				}
+			}
+		}
+
+		.address {
+			@include font-size(14);
+			@include line-height(19);
+			letter-spacing: 1.4px;
+			font-weight: 600;
+			color: #FEFEFE;
+			margin-top: 9px;
+			text-align: right;
+		}
+
+		.copyright {
+			@include font-size(12);
+			@include line-height(17);
+			letter-spacing: 1.2px;
+			color: $white;
+			margin-top: 6px;
+			text-align: right;
+		}
+
+		.mobile-only {
+			display:none;
+		}
+	}
+
+	@include media-breakpoint-down(md) {
+		margin-top: 5px;
+		// Offset for mobile quick links
+		margin-bottom: 94px;
+
+		.desktop-only {
+			display:none;
+		}
+
+		.mobile-only {
+			display:block;
+		}
+
+		&-nav {
+			background-color: #013061;
+			padding: 24px 15px;
+			min-width: 0;
+			border-right: none;
+
+			.social-nav {
+				justify-content: space-between;
+				margin-bottom: 15px;
+
+				.nav-link {
+					padding: 0;
+				}
+			}
+
+			.link-nav {
+				height: auto;
+				flex-direction: row;
+
+				.nav-item {
+					flex: 50%;
+
+					.nav-link {
+						@include font-size(16);
+						@include line-height(19);
+						padding-top: 10.5px;
+						padding-bottom: 10.5px;
+						font-weight: 400;
+					}
+				}
+
+			}
+		}
+
+		&-util-nav {
+			background-color: #1580FE;
+			border-left: none;
+			padding: 21px 15px 16px;
+			border-top: 3px solid $white;
+
+			.util-nav {
+				.sticky-only {
+					display:none;
+				}
+
+				.nav-item {
+					padding-bottom: 0;
+
+					.nav-link {
+						@include font-size(14);
+						@include line-height(24);
+
+						svg, img {
+							@include svg-format(32px, 32px, currentColor);
+							margin-right: 14px;
+						}
+					}
+				}
+			}
+
+			.address {
+				@include font-size(14);
+				@include line-height(16);
+				font-weight: 700;
+				text-align: left;
+				margin-top: 18px;
+				margin-bottom: 0;
+				letter-spacing: 0;
+			}
+
+			.copyright {
+				@include font-size(14);
+				@include line-height(16);
+				margin-top: 0;
+				text-align: left;
+			}
+		}
+	}
+}

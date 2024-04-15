@@ -1,0 +1,82 @@
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='search'],
+input[type='tel'],
+input[type='autocomplete'],
+select,
+textarea {
+  @include font-size(14);
+  @include line-height(19);
+  font-weight: 400;
+  background: $white;
+  border: none;
+  color: $black;
+  box-shadow: none;
+  outline: none;
+  border-radius: 0px;
+  width: 100%;
+  height: 40px;
+
+  &:focus {
+    outline: 1px solid $primary;
+  }
+
+  @include placeholder() {
+    text-transform: uppercase;
+    color: $black;
+  }
+}
+input.error {
+  border: 2px solid #ff3e3e;
+  background: #ffebeb;
+  box-shadow: 0 0 8px 0 #fff;
+}
+input[type='submit'] {
+  cursor: pointer;
+}
+label {
+  margin-bottom: 0px;
+  @include font-size(14);
+  font-weight: 600;
+}
+
+// style custom default select box arrows
+select {
+  padding: 0px 33px;
+  height: 48px;
+  appearance: none; /* remove default arrow */
+  background-image: url(/public/library/img/arrowDownBlue.svg); /* add custom arrow */
+  background-size: 10px 25px;
+  background-repeat: no-repeat;
+  background-position: center right 15px;
+
+  &::-ms-expand {
+    display: none; /* hide the default arrow in ie10 and ie11 */
+  }
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+.error {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.field-validation-error {
+  @include font-size(14);
+  line-height: 16px;
+}
+.thankYou {
+  text-align: center;
+
+  .title {
+    @include font-size(22);
+    font-weight: 600;
+  }
+  .blurb {
+    line-height: 22px;
+    margin-top: 10px;
+  }
+}

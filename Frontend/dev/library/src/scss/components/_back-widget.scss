@@ -1,0 +1,41 @@
+.back-arrow {
+    padding: 9px 0px;
+    background: #F2F6FA;
+    margin-top: 46px;
+    display: inline-block;
+    width: 100%;
+
+    a {
+        @include font-size(18);
+        @include line-height(45);
+        color: #000;
+        font-weight: 700;
+
+        svg {
+            min-height: 32px;
+            max-height: 32px;
+            min-width: 32px;
+            max-width: 32px;
+            fill: #000;
+            margin-right: 21px;
+        }
+    }
+}
+
+
+
+@include media-breakpoint-down(sm) {
+    .back-arrow {
+        background: none;
+
+        a {
+            display: block;
+            color: $primary;
+            text-decoration: none;
+            border-bottom: 1px solid $primary;
+
+            &:hover, &:focus { border-bottom: 1px solid transparent; }
+            svg { display: none; }
+        }
+    }
+}

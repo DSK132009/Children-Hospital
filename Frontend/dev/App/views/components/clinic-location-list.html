@@ -1,0 +1,34 @@
+<div class="widget-wrapper">
+    <section class="clinic-location-list {{ clinicType }}-list" aria-label="list of {{ clinicType }} clinic locations" data-type="{{ clinicType }}">
+        <div class="container">
+            <h2 class="headline"><strong>{{ clinicType }}</strong> Care</h2>
+            <div class="row">
+                {% for location in locations %}
+                    <div class="col-12 col-lg-4">
+                        <article class="card location-card" 
+                        aria-label="{{ location.title }} info card" 
+                        data-lat="{{ location.lat }}" 
+                        data-lng="{{ location.lng }}" 
+                        data-type="{{ location.type }}"
+                        >
+                            <div class="card-img">
+                                <img class="img-load-lazy" data-src="{{ location.img }}" alt="Airplane icon" data-srcset="{{ location.img }}" />
+                            </div>
+                            <div class="card-content">
+                                <a href="#" class="title" aria-label="google maps directions to {{ location.title }}">{{ location.title }}</a>
+                                <p class="address-1">{{ location.address1 }}</p>
+                                <p class="address-2">{{ location.address2 }}</p>
+                                <p class="phone">{{ location.phone }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <strong>HOURS: </strong>
+                                <p>{{ location.days }}</p>
+                                <p>{{ location.hours }}</p>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,23 @@
+﻿@model ComponentViewModel<MVC.Models.Sections.Newsletter.NewsletterSection>
+
+@{ 
+    var widgetWhitelist = new[] { "Kentico.FormWidget" };
+}
+
+<div class="newsletter-cta">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg">
+                <div class="newsletter-cta-content">
+                    <h2 class="h5 headline-alt">@Model.Properties.Heading</h2>
+                    <div class="fr-view">
+                        @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.Description))
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-auto">
+                @await Html.Kentico().WidgetZoneAsync(allowedWidgets: widgetWhitelist)
+            </div>
+        </div>
+    </div>
+</div>

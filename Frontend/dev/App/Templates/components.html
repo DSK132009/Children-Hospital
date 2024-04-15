@@ -1,0 +1,19 @@
+{% set pageTitle="Inner" %}
+{% extends "../MasterPages/master.html" %}
+
+{% block content %}
+
+	{% set innerHero = true %}
+	{% set heroHeader = 'UMC INNER PAGE COMPONENTS' %}
+	
+	{% include "../views/components/generic-hero.html" %}
+
+    {% include "../views/components/video-section.html" %}
+
+    {% set backgroundImage = '/library/img/image-callout.png' %}
+
+    {% include "../views/components/team-members.html" %}
+    
+    {% include "../views/components/search-events.html" %}
+
+{% endblock %}

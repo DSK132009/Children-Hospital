@@ -1,0 +1,23 @@
+{% set pageTitle="Inner" %}
+{% extends "../MasterPages/master.html" %}
+
+{% block content %}
+
+	{% set innerHero = true %}
+	{% set heroHeader = 'UMC INNER EXAMPLE' %}
+	
+	{% include "../views/components/generic-hero.html" %}
+	{% include "../views/shared/breadcrumbs.html" %}
+	{% include "../views/components/quick-nav.html" %}
+	{% include "../views/components/image-callout.html" %}
+
+	{% set imageLeft = true %}
+
+	{% include "../views/components/image-callout.html" %}
+	{% include "../views/components/featured-content.html" %}
+
+	{% include "../views/components/figures-achievements.html" %}
+	{% include "../views/components/donor-registration.html" %}
+
+
+{% endblock %}

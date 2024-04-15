@@ -1,0 +1,40 @@
+.donor-registration-section {
+
+    h5, .h5 {
+        color: #000;
+    }
+
+    .donor-list {
+        margin-top: 46px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        .donor { 
+            margin-bottom: 41px;
+            
+            img {
+                max-width: 117px;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+
+        h5, .h5 {
+            @include font-size(18);
+            @include line-height(21);
+            color: #0E3057;
+        }
+
+        .donor-list {
+            margin-top: 16px;
+            
+            .donor {
+                width: 50%;
+                text-align: center;
+            }
+        }
+    }
+}

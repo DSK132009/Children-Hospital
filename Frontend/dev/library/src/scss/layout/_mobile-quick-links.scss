@@ -1,0 +1,42 @@
+.mobile-quick-links {
+    display: none;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 94px;
+        background-color: #002F5E;
+        padding: 0 15px;
+        z-index: $zindex-fixed;
+        border-top: 3px solid $white;
+
+        .nav-item {
+            flex: 1 1 auto;
+            width: 100%;
+
+            .nav-link {
+                @include font-size(14);
+                @include line-height(14);
+                font-weight: 700;
+                color: $white;
+                text-align: center;
+                text-decoration: none;
+                padding: 7px 0 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-transform: uppercase;
+
+                svg, img {
+                    @include svg-format(32px, 32px, currentColor);
+                    margin-bottom: 4px;
+                }
+            }
+        }
+    }
+}

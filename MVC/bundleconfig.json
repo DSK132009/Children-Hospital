@@ -1,0 +1,27 @@
+[
+  {
+    "outputFileName": "wwwroot/bundles/styles.min.css",
+    "inputFiles": [     
+      "wwwroot/public/library/css/styles.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundles/scripts.min.js",
+    "inputFiles": [
+      "wwwroot/public/library/js/vendor/browser-polyfill.min.js",
+      "wwwroot/public/library/js/vendor/svg4everybody.min.js",
+      "wwwroot/public/library/js/bootstrap-build.js",
+      "wwwroot/public/library/js/main.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

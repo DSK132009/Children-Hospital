@@ -1,0 +1,22 @@
+{% set pageTitle="Homepage" %}
+{% extends "../MasterPages/master.html" %}
+
+{% block content %}
+
+	{% include "../views/components/alert.html" %}
+
+	{% set hasDivider = true %}
+	
+	{% include "../views/components/generic-hero.html" %}
+	{% include "../views/components/icon-callouts.html" %}
+	{% include "../views/components/stat-cards.html" %}
+	{% include "../views/components/quick-care-locator.html" %}
+	{% include "../views/components/image-callout.html" %}
+
+	{% set imageLeft = true %}
+
+	{% include "../views/components/image-callout.html" %}
+	{% include "../views/components/latest-news.html" %}
+	{% include "../views/components/newsletter-cta.html" %}
+	
+{% endblock %}

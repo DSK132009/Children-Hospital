@@ -1,0 +1,9 @@
+﻿@using Kentico.Forms.Web.Mvc
+@using Kentico.Web.Mvc
+
+@model FormSectionViewModel<MVC.Models.FormSections.SubmitWithLeftSmallTextSection.SubmitWithLeftSmallTextSectionProperties>
+
+<div class="d-flex justify-content-end flex-wrap flex-lg-nowrap">
+    <small>@Model.Properties.LeftText</small>
+    @await Html.Kentico().FormZoneAsync()
+</div>

@@ -1,0 +1,308 @@
+﻿@using MVC.Models.Events;
+@using CMS.DataEngine;
+@using CMS.SiteProvider;
+@using Locations;
+@using Events;
+
+@model EventDetailModel
+
+@inject ILocationInfoProvider _locationInfoProvider
+@inject IActiveAttendeeInfoProvider _attendeeInfoProvider
+@inject ICategoryInfoProvider _categoryInfoProvider
+
+@{
+    var cacheEnabled = !Context.Kentico().Preview().Enabled && !Context.Kentico().PageBuilder().EditMode;
+
+    //ViewData used to pass current page into Layout
+    ViewData["CurrentPage"] = Model.Page;
+    Layout = "_Layout";
+
+    var dependencyKeys = new string[] {
+        $"events.eventsession|byid|{Model.Event.EventSessionID}",
+        $"events.activeattendee|all"};
+
+    var heroImage = String.IsNullOrEmpty(Model.Event.HeroImage) ? SettingsKeyInfoProvider.GetValue("Events_DefaultHeroImage", SiteContext.CurrentSite.SiteName) : Model.Event.HeroImage;
+    var headerText = SettingsKeyInfoProvider.GetValue("Events_HeroHeaderText", SiteContext.CurrentSite.SiteName);
+    var subHeaderText = SettingsKeyInfoProvider.GetValue("Events_HeroSubheaderText", SiteContext.CurrentSite.SiteName);
+    var parkingAtUmcLink = SettingsKeyInfoProvider.GetValue("Events_ParkingAtUMCLink", SiteContext.CurrentSite.SiteName);
+    var facilityMapsLink = SettingsKeyInfoProvider.GetValue("Events_FacilityMapsLink", SiteContext.CurrentSite.SiteName);
+    var travelToUmcLink = SettingsKeyInfoProvider.GetValue("Events_TravelToUMCLink", SiteContext.CurrentSite.SiteName);
+    var payYourBillLink = SettingsKeyInfoProvider.GetValue("Events_PayYourBillLink", SiteContext.CurrentSite.SiteName);
+
+    var streetAddress = "";
+
+    var location = _locationInfoProvider.Get().WhereEquals("LocationGuid", Model.Event.LocationGuid).FirstOrDefault();
+    if (location != null)
+    {
+        streetAddress = String.IsNullOrEmpty(location.StreetAddress2) ? location.StreetAddress : $"{location.StreetAddress} {location.StreetAddress2}";
+    }
+
+    var attendeeCount = _attendeeInfoProvider.Get().Columns("ParentEventID").WhereEquals("ParentEventID", Model.Event.EventSessionID).Count;
+    var slotsLeft = Model.Event.EventSize - attendeeCount;
+
+    var category = _categoryInfoProvider.Get(Model.Event.EventCategory);
+}
+
+<cache enabled="@cacheEnabled" expires-after="@TimeSpan.FromMinutes(5)" vary-by-user="true" vary-by-route="@CacheVaryByConstants.ROUTE_URL_SLUG,EventCodeName">
+    <cache-dependency cache-keys="@dependencyKeys" enabled="@cacheEnabled" />
+    <section class="generic-hero lazy-load-bg" data-desktop-src="@heroImage.TrimStart('~')" data-mobile-src="@heroImage.TrimStart('~')">
+
+        <div class="generic-hero-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+
+
+                        <h1 class="hero-header-divide">@headerText</h1>
+                        <p>@subHeaderText</p>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="generic-hero-ctas">
+                            <a href="@parkingAtUmcLink" aria-label="Parking at UMC">
+                                <svg>
+                                    <use xlink:href="/public/library/img/icons.svg#parking"></use>
+                                </svg>
+                                <span>Parking <br /> at UMC</span>
+                            </a>
+                            <a href="@facilityMapsLink" aria-label="Facility maps of UMC">
+                                <svg>
+                                    <use xlink:href="/public/library/img/icons.svg#facility-maps"></use>
+                                </svg>
+                                <span>Facility maps of UMC</span>
+                            </a>
+
+                            <a href="@travelToUmcLink" aria-label="Travel to UMC">
+                                <svg>
+                                    <use xlink:href="/public/library/img/icons.svg#travel"></use>
+                                </svg>
+                                <span>Travel to UMC</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="generic-hero-footer">
+            <div class="container-fluid">
+                <a href="@payYourBillLink" aria-label="Pay Your Bill">
+                    <svg>
+                        <use xlink:href="/public/library/img/icons.svg#pay"></use>
+                    </svg>
+                    <span>Pay Your Bill</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <a href="/" aria-label="home">HOME</a>
+            <a href="/foundation-community-support" aria-label="event search">FOUNDATION & COMMUNITY SUPPORT</a>
+            <a href="/foundation-community-support/class-and-event-calendar" aria-label="event search">CLASS & EVENT CALENDAR</a>
+            <span class="current-page">@Model.Event.EventName.ToUpper()</span>
+        </div>
+    </div>
+    <div class="widget-wrapper">
+        <div class="back-arrow">
+            <div class="container">
+                <a href="/foundation-community-support/class-and-event-calendar" aria-label="back to previous page">
+                    <svg>
+                        <use href="/public/library/img/fa.svg#long-arrow-alt-left"></use>
+                    </svg>BACK
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-wrapper">
+        <section class="class-layout" aria-label="Section for @Model.Event.EventName">
+            <div class="container">
+                <h2 class="headline">@Model.Event.EventName <span>@(category != null ? category.CategoryName : "")</span></h2>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="description-row">
+                            <h5>DESCRIPTION:</h5>
+                            @Html.Raw(Model.Event.Description)
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="description-row">
+                            <h5>AVAILABLE SPOTS:</h5>
+                            <p>@(slotsLeft < 0 ? 0 : slotsLeft) spots left</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="class-info-row">
+                            @if (location != null)
+                            {
+                                <div class="info-col">
+                                    <h5>LOCATION:</h5>
+                                    <div class="info-content">
+                                        <strong>@location.LocationName</strong>
+                                        <a href="https://www.google.com/maps/search/?api=1&query=@streetAddress @location.City, @location.State @location.Zip" target="_blank" aria-label="link to @location.LocationName">@streetAddress @location.City, @location.State @location.Zip</a>
+                                    </div>
+                                </div>
+                            }
+                            <div class="info-col">
+                                <h5>DATE & TIME:</h5>
+                                <div class="info-content">
+                                    <p><strong>FROM:</strong><strong>@Model.Event.EventStart.ToString("M/dd/yyyy")</strong><span>@Model.Event.EventStart.ToString("h:mm tt").ToUpper()</span></p>
+                                    <p><strong>TO:</strong><strong>@Model.Event.EventEnd.ToString("M/dd/yyyy")</strong><span>@Model.Event.EventEnd.ToString("h:mm tt").ToUpper()</span></p>
+                                </div>
+                            </div>
+                            <div class="info-col">
+                                <h5>COST:</h5>
+                                <div class="info-content">
+                                    <strong>@Model.Event.Cost</strong>
+                                </div>
+                            </div>
+                            <div class="info-col">
+                                <h5>EMAIL:</h5>
+                                <div class="info-content">
+                                    @foreach (var email in Model.Event.ContactEmail.Split(';'))
+                                    {
+                                        <a href="mailto:@email" aria-label="email @email">@email</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</cache>
+
+@* Leave form outside of output cache to prevent issues with the AntiForgery token being cached *@
+<section class="register-for-event" aria-label="register for this event form">
+    @if (slotsLeft > 0)
+    {
+        <div class="container">
+            <h2 class="headline">Register for this event:</h2>
+            <strong id="errorMessage" style="display: none; padding-bottom: 30px; color: red;"></strong>
+            <strong id="confirmationMessage" style="display: none; padding-bottom: 30px;"></strong>
+            <form asp-controller="eventregistration" asp-action="Index" asp-antiforgery="true" enctype="multipart/form-data" id="registration-form" method="post" class="form-wrapper">
+                <input type="hidden" name="eventGuid" id="eventGuid" value="@Model.Event.EventSessionGuid" />
+                <div class="row">
+                    <div class="col-xl-5 col-lg-4 col-7">
+                        <div class="form-group">
+                            <label for="fname">*FIRST NAME:</label>
+                            <input type="text" name="fname" maxlength="50" id="fname" required>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 col-lg-4 col-5">
+                        <div class="form-group">
+                            <label for="midInitial">MIDDLE INITIAL:</label>
+                            <input type="text" name="midInitial" maxlength="5" id="midInitial">
+                        </div>
+                    </div>
+
+                    <div class="col-xl-5 col-lg-4">
+                        <div class="form-group">
+                            <label for="lname">*LAST NAME:</label>
+                            <input type="text" name="lname" maxlength="50" id="lname" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="phone">*PHONE:</label>
+                            <input type="tel" name="phone" maxlength="25" id="phone" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="email">*EMAIL:</label>
+                            <input type="email" name="email" maxlength="100" id="email" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="reg-prnr">IF UMC EMPLOYEEE, ENTER PRNR#:</label>
+                            <input type="text" maxlength="50" name="prnr" id="prnr">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-row row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="reg-comment">COMMENT:</label>
+                            <textarea name="comment" id="comment"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="submit-col col-md-4">
+                        <input type="submit" class="btn btn-secondary" id="submitButton" value="JOIN CLASS">
+                        <div class="required-fields">*REQUIRED FIELDS</div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="container" style="text-align: center;">
+            <strong style="padding-bottom: 30px;">There are unfortunately no more available spots for this event.</strong>
+        </div>
+    }
+</section>
+
+<script type="text/javascript">
+    defer(function () {
+        $('#registration-form').submit(function (event) {
+            event.preventDefault();
+
+            $('#confirmationMessage').css('display', 'none');
+            $('#errorMessage').css('display', 'none');
+            $('#errorMessage').val('');
+            $('#submitButton').attr('disabled', 'disabled');
+            $('#submitButton').val('PLEASE WAIT');
+
+            //Set the URL.
+            var url = $("#registration-form").attr("action");
+
+            //Add the Field values to FormData object.
+            var formData = new FormData(document.getElementById('registration-form'));
+
+            //POST to controller
+            $.ajax({
+                method: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (response) {
+                //Get and parse response
+                if (response.status === "success") {
+                    $('#confirmationMessage').css('display', 'block');
+                    $('#confirmationMessage').text(response.message);
+                    $('#registration-form').hide();
+                } else if (response.status == "event_full") {
+                    $('#confirmationMessage').css('display', 'block');
+                    $('#confirmationMessage').text(response.message);
+                    $('#errorMessage').hide();
+                    $('#registration-form').hide();
+                } else {
+                    $('#errorMessage').css('display', 'block');
+                    $('#errorMessage').text(response.message);
+                }
+            }).fail(function () {
+                //Display error message on non 2XX returns
+                $('#errorMessage').css('display', 'block');
+                $('#errorMessage').text('An error occurred while processing your request. Please refresh the page and try again. If you continue experiencing issues, please contact us.');
+            }).always(function () {
+                //Re-enable submit button
+                $('#submitButton').prop('disabled', '');
+                $('#submitButton').val('JOIN CLASS');
+            });
+        });
+    });
+</script>

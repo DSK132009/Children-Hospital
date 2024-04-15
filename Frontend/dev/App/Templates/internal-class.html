@@ -1,0 +1,17 @@
+{% set pageTitle="Inner" %}
+{% extends "../MasterPages/master.html" %}
+
+{% block content %}
+
+	{% set innerHero = true %}
+	{% set heroHeader = 'EDUCATION & EVENTS' %}
+	
+	{% include "../views/components/generic-hero.html" %}
+	{% include "../views/shared/breadcrumbs.html" %}
+    {% include "../views/components/back-widget.html" %}
+
+    {% include "../views/components/class-layout.html" %}
+    
+	{% include "../views/components/register-for-event.html" %}
+
+{% endblock %}

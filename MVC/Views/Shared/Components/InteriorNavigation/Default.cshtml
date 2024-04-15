@@ -1,0 +1,130 @@
+﻿@using Kentico.PageBuilder.Web.Mvc
+@using CMS.DocumentEngine;
+@using CMS.DocumentEngine.Types.Custom
+@using CMS.DocumentEngine.Types.UMCHospital
+@using MVC.Models.Widgets.Navigation
+@using CMS.SiteProvider
+
+@inject IPageRetriever pageRetriever;
+
+@model ComponentViewModel<MVC.Models.Widgets.Navigation.InteriorNavigationProperties>
+
+@{
+    var cacheEnabled = !Context.Kentico().Preview().Enabled && !Context.Kentico().PageBuilder().EditMode;
+
+    TreeNode CurrentDocument;
+    if (ViewData["CurrentPage"] != null)
+    {
+        //Used to pass Page object from custom page types/templates into the layout
+        CurrentDocument = ViewData["CurrentPage"] as TreeNode;
+    }
+    else
+    {
+        CurrentDocument = Model?.Page ?? TreeNode.New();
+    }
+
+    var varyBy = CurrentDocument.NodeAliasPath == "/404" ? "404" : "Not-404";
+
+    var dependencyKeys = new string[] {
+        $"documentid|{CurrentDocument.DocumentID}",
+        $"node|{SiteContext.CurrentSiteName.ToLower()}|{CurrentDocument.NodeAliasPath.ToLower()}|childnodes",
+        $"nodes|{SiteContext.CurrentSiteName.ToLower()}|UMCHospital.navigation|all",
+        $"nodes|{SiteContext.CurrentSiteName.ToLower()}|UMCHospital.navigationlink|all",
+        "cms.settingskey|all",
+        "nodeorder"};
+}
+
+<cache enabled="@cacheEnabled" expires-after="@TimeSpan.FromMinutes(10)" vary-by-user="true" vary-by-route="@CacheVaryByConstants.ROUTE_URL_SLUG,@varyBy,TeamMemberId,EventCodeName">
+    <cache-dependency cache-keys="@dependencyKeys" enabled="@cacheEnabled" />
+    <section class="quick-nav-section" aria-label="quick navigation section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4">
+                    <ul class="quick-links">
+                        @foreach (var topPage in Model.Properties.Pages)
+                        {
+                            var vm = new InteriorNavigationViewModel(topPage);
+
+                            if(vm.HideFromInteriorNavigation)
+                            {
+                                continue;
+                            }
+
+                            var itemClass = "";
+
+                            if (topPage.NodeGUID == Model.Page.NodeGUID || topPage.Children.Where(c => c.NodeGUID == Model.Page.NodeGUID).Count() > 0)
+                            {
+                                itemClass = "current show";
+                            }
+
+                            if (topPage.Children.Count > 0)
+                            {
+                                //Required as .Children does not return coupled columns, even when using .WithAllData()
+                                var children = pageRetriever.Retrieve<Page>(documentQuery => documentQuery.WhereEquals("NodeParentID", topPage.NodeID).Published().OrderBy("NodeOrder")).ToList<TreeNode>();
+                                var sideNavItems = pageRetriever.Retrieve<SideNavigationItem>(documentQuery => documentQuery.WhereEquals("NodeParentID", topPage.NodeID).Published().OrderBy("NodeOrder")).ToList<TreeNode>();
+
+                                if (sideNavItems != null && sideNavItems.Count > 0)
+                                {
+                                    children.AddRange(sideNavItems);
+                                    children = children.OrderBy(p => p.NodeOrder).ToList();
+                                }
+
+                                <li>
+                                    <div class="quick-link-dropdown @itemClass">
+                                        <a target="@vm.LinkTarget" class="quick-link-toggle @itemClass" href="@vm.LinkUrl" aria-label="link to @vm.LinkTitle">@vm.LinkTitle</a>
+                                        <button class="quick-link-dropdown-toggle @itemClass">
+                                            <svg class="open">
+                                                <use xlink:href="/public/library/img/fa.svg#plus-circle"></use>
+                                            </svg>
+                                            <svg class="close">
+                                                <use xlink:href="/public/library/img/fa.svg#minus-circle"></use>
+                                            </svg>
+                                        </button>
+                                        <div class="quick-dropdown-menu @itemClass">
+                                            <ul>
+
+
+                                                @foreach (var child in children)
+                                                {
+                                                    var childVm = new InteriorNavigationViewModel(child);
+                                                    if (childVm.HideFromInteriorNavigation)
+                                                    {
+                                                        continue;
+                                                    }
+
+                                                    <li class="dropdown-list-item">
+                                                        <a target="@childVm.LinkTarget" href="@childVm.LinkUrl" aria-label="dropdown link to @childVm.LinkTitle">@childVm.LinkTitle</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <div class="quick-link-dropdown no-children @itemClass">
+                                        <a target="@vm.LinkTarget" class="@(topPage.NodeGUID == Model.Page.NodeGUID ? " current" : "")" href="@vm.LinkUrl" aria-label="link to @vm.LinkTitle">@vm.LinkTitle</a>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="col-12 col-lg-8">
+                    <div class="content-area fr-view" @(Context.Kentico().PageBuilder().EditMode ? Html.Raw("style=\"border: solid; box-sizing: border-box; padding: 10px; border-color: black; padding-bottom: 20px;\"") : Html.Raw(""))>
+                        @if (Context.Kentico().PageBuilder().EditMode)
+                        {
+                            Html.Kentico().RichTextEditor(nameof(Model.Properties.Content));
+                        }
+                        else
+                        {
+                            @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.Content));
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</cache>

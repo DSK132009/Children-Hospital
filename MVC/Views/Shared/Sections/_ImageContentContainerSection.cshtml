@@ -1,0 +1,21 @@
+﻿@model ComponentViewModel<MVC.Models.Sections.ImageContentContainer.ImageContentContainerSectionProperties>
+
+@{ 
+    var widgetWhitelist = new[] { "UMCHospital.Widgets.ImageContent" };
+}
+
+<div class="widget-wrapper">
+    <section class="oot-section" aria-label="Image Content Section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 fr-view">
+                    <h2 class="headline">@Model.Properties.Heading</h2>
+                    @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.Description))
+                </div>
+                <div class="col-12">
+                    @await Html.Kentico().WidgetZoneAsync(allowedWidgets: widgetWhitelist)
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

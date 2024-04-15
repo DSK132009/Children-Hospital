@@ -1,0 +1,45 @@
+.media-info-news {
+    background: #F2F6FA;
+    padding: 4.25rem 0 3.4rem 0;
+
+    .headline {
+        margin-bottom: 4.125rem;
+    }
+
+    .media-info-articles {
+        display: flex;
+
+        article {
+            width: calc((100% - (30px * 6)) / 4);
+            margin: 0 1.875rem;
+
+            .card-img {
+                margin-bottom: 1.6rem;
+            }
+
+            a {
+                font-weight: 700;
+                line-height: 35px;
+                font-size: 30px;
+                letter-spacing: -0.72px;
+                color: #000;
+                text-transform: uppercase;
+            }
+
+            .card-title {
+                line-height: 32px;
+                font-size: 16px;
+                letter-spacing: -0.38px;
+                text-transform: uppercase;
+            }
+
+            &:first-of-type {
+                margin-left: 0;
+            }
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+    }
+}

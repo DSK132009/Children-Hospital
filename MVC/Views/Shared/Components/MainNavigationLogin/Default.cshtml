@@ -1,0 +1,13 @@
+﻿@model MVC.Models.Navigation.NavigationViewModel
+
+<ul class="dropdown-menu">
+    @foreach (var loginNode in Model.Links)
+    {
+        var speedbumpClass = loginNode.UseSpeedBump ? "speedbump-class" : "";
+
+        <li>
+            <a class="dropdown-item @speedbumpClass" href="@loginNode.Url"
+               aria-label="@loginNode.AriaLabel" target="=@loginNode.Target">@loginNode.DisplayText</a>
+        </li>
+    }
+</ul>

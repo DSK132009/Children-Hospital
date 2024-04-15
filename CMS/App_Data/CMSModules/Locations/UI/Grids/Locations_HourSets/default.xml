@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<grid>
+  <actions parameters="LocationsHourSetID">
+    <action name="edit" caption="$General.Edit$" fonticonclass="icon-edit" fonticonstyle="allow" />
+    <action name="#delete" caption="$General.Delete$" fonticonclass="icon-bin" fonticonstyle="critical" confirmation="$General.ConfirmDelete$" />
+    <action name="#moveup" caption="$General.Up$" fonticonclass="icon-chevron-up" />
+    <action name="#movedown" caption="$General.Down$" fonticonclass="icon-chevron-down" />
+  </actions>
+  <columns>
+    <column source="SetName" caption="Name" wrap="true" />
+    <column source="SetDisplayName" caption="Display Name" wrap="true" />
+    <column source="SetEnabled" caption="Enabled" />
+  </columns>
+  <options>
+    <key name="DisplayFilter" value="false" />
+    <key name="AllowSorting" value="false" />
+  </options>
+</grid>

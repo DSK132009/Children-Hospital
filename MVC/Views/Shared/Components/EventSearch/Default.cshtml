@@ -1,0 +1,250 @@
+﻿@using Locations;
+
+@model MVC.Models.Widgets.Events.EventSearchModel
+
+<section class="search-events" aria-label="filter and search events">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="intro-text">@Html.Raw(Html.Kentico().ResolveRichText(Model.IntroText))</div>
+            </div>
+        </div>
+
+        <div class="event-filters">
+            <div class="row">
+
+                <div class="col-lg-6">
+
+                    <div class="datepicker-row row mx-0">
+                        <div class="date-wrapper form-inline form-group">
+                            <label for="search-events-from" class="wide-col">FROM:</label>
+                            <input type="text" class="datepicker" id="search-events-from" placeholder="MM/DD/YYYY">
+                        </div>
+                        <div class="date-wrapper form-inline form-group">
+                            <label for="search-events-to">TO:</label>
+                            <input type="text" class="datepicker" id="search-events-to" placeholder="MM/DD/YYYY">
+                        </div>
+                    </div>
+
+                    <div class="types-row row mx-0">
+                        <div class="form-group form-check form-check-inline wide-col">
+                            <input class="form-check-input" type="checkbox" id="allTypes" value="option1">
+                            <label class="form-check-label" for="allTypes">ALL</label>
+                        </div>
+                        <div class="form-group form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="communicationEdu" value="option2">
+                            <label class="form-check-label" for="communicationEdu">COMMUNITY EDUCATION</label>
+                        </div>
+                        <div class="form-group form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="clinicalClasses" value="option3">
+                            <label class="form-check-label" for="clinicalClasses">CLINICAL CLASSES</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <dir class="form-inline form-group">
+                                <label for="location-filter" class="wide-col">LOCATION:</label>
+                                <select id="location-filter">
+                                    <option value="all">All Locations</option>
+                                    @foreach (var location in Model.Locations)
+                                    {
+                                        <option value="@location.LocationGuid">@location.LocationName</option>
+                                    }
+                                </select>
+                            </dir>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-inline form-group">
+                                <label for="cat" class="wide-col-2">CATEGORY:</label>
+                                <select id="cat">
+                                    <option value="all">Category Name</option>
+                                    @foreach(var category in Model.Categories)
+                                    {
+                                        <option value="@category.CategoryCodeName">@category.CategoryName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-3"></div>
+                        <div class="col-12">
+                            <div class="form-inline form-group">
+                                <label for="textSearch" class="wide-col-2">TEXT SEARCH:</label>
+                                <input type="text" id="textSearch" placeholder="Enter text about events">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-buttons">
+                            <div class="wide-col-2">&nbsp;</div>
+                            <input type="button" class="btn btn-secondary" value="SEARCH EVENTS" onclick="submitSearch()">
+                            <input type="button" class="btn btn-secondary" value="RESET" onclick="resetSearch()" />
+                            @*<a href="/events" class="reset-btn btn btn-secondary">RESET</a>*@
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="events-table">
+            @if (Model.Events.Count == 0)
+            {
+                <strong>No events found for selected filters. Please adjust your filters or click "Reset".</strong>
+            }
+            else
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EVENT</th>
+                            <th>COST</th>
+                            <th>DATE & TIME</th>
+                            <th>LOCATION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var eventSession in Model.Events)
+                        {
+                            var location = Model.Locations.Where(loc => loc.LocationGuid == eventSession.LocationGuid).FirstOrDefault();
+
+                            if (location != null)
+                            {
+                                var streetAddress = "";
+                                streetAddress = String.IsNullOrEmpty(location.StreetAddress2) ? location.StreetAddress : $"{location.StreetAddress} {location.StreetAddress2}";
+
+                                <tr>
+                                    <td style="text-align: center;"><a href="/events/@eventSession.EventCodeName" aria-label="@eventSession.EventName">@eventSession.EventName</a></td>
+                                    <td>@eventSession.Cost</td>
+                                    <td>@eventSession.EventStart.ToString("MM/dd/yyyy h:mm tt")</td>
+                                    <td><a href="https://www.google.com/maps/search/?api=1&query=@streetAddress @location.City, @location.State @location.Zip" aria-label="@streetAddress" target="_blank">@location.LocationName</a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    function resetSearch() {
+        window.location.href = window.location.pathname;
+    }
+
+    function submitSearch() {
+        var queryParameters = new URLSearchParams();        
+
+        var dateFrom = $('#search-events-from').val();
+        var dateTo = $('#search-events-to').val();
+        var allTypesChecked = $('#allTypes').prop('checked');
+        var communityEducationChecked = $('#communicationEdu').prop('checked');
+        var clinicalClassesChecked = $('#clinicalClasses').prop('checked');
+        var searchText = $('#textSearch').val();
+        var category = $('#cat').val();
+        var location = $('#location-filter').val();
+
+        if (dateFrom) {
+            queryParameters.append('datefrom', dateFrom);
+        }
+
+        if (dateTo) {
+            queryParameters.append('dateto', dateTo);
+        }
+
+        if (searchText) {
+            queryParameters.append('searchtext', searchText);
+        }
+
+        if (category) {
+            queryParameters.append('category', category);
+        }
+
+        if (location) {
+            queryParameters.append('location', location);
+        }
+
+        if (!allTypesChecked) {
+            var options = '';
+
+            if (communityEducationChecked) {
+                options += 'CommunityEducation'
+            }
+
+            if (clinicalClassesChecked) {
+                options += '|ClinicalClasses'
+            }
+
+            if (options) {
+                if (options[0] === '|') {
+                    options = options.substring(1);
+                }
+
+                queryParameters.append('option', options);
+            }
+        }
+        else {
+            queryParameters.append('option', 'all');
+        }
+
+        window.location.href = window.location.pathname + '?' + queryParameters.toString();
+    }
+
+    @* Set parameters to default value *@
+    defer(function () {
+        $(document).ready(function () {
+            var urlSearchParams = new URLSearchParams(window.location.search);
+
+            var dateFrom = urlSearchParams.get('datefrom');
+            if (dateFrom) {
+                $('#search-events-from').val(dateFrom);
+            }
+
+            var dateTo = urlSearchParams.get('dateto');
+            if (dateTo) {
+                $('#search-events-to').val(dateTo);
+            }
+
+            var searchText = urlSearchParams.get('searchtext');
+            if (searchText) {
+                $('#textSearch').val(searchText);
+            }
+
+            var category = urlSearchParams.get('category');
+            if (category) {
+                $('#cat').val(category);
+            }
+
+            var location = urlSearchParams.get('location');
+            if (location) {
+                $('#location-filter').val(location);
+            }
+
+            var options = urlSearchParams.get('option');
+            if (options) {
+                if (options.indexOf('all') > -1) {
+                    $('#allTypes').prop('checked', true);
+                }
+
+                if (options.indexOf('CommunityEducation') > -1) {
+                    $('#communicationEdu').prop('checked', true);
+                }
+
+                if (options.indexOf('ClinicalClasses') > -1) {
+                    $('#clinicalClasses').prop('checked', true);
+                }
+            }
+        })
+    })    
+</script>

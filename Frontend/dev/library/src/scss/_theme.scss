@@ -1,0 +1,32 @@
+// Main Theme Settings
+
+// Colors
+$primary: #00274d; // dark blue
+$secondary: #034ca1; // blue
+$tertiary: #00fda0; //light blue
+$quaternary: #82919d; // gray
+$senary: #8493a0; // gray blue
+
+$light-font-color: #40484f; // light gray font
+
+// Typography
+$primary-font: 'Roboto', sans-serif;
+$secondary-font: 'Poppins', sans-serif;
+$base-font-size: 16;
+$base-font-color: $black;
+
+// Headlines
+$htag-font: $primary-font;
+$htag-color: #01254E;
+
+// Links
+$link-color: $secondary;
+$link-hover: $secondary;
+
+// Z-indexes:
+$modal-content-z-index: 12;
+$modal-z-index: 11;
+$menu-z-index: 10;
+$login-z-index: 10;
+$header-z-index: 9;
+$scrollToTop-z-index: 9;

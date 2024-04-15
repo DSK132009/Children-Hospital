@@ -1,0 +1,75 @@
+﻿@model ComponentViewModel<MVC.Models.Widgets.Video.VideoProperties>
+
+@inject XperienceAdapter.Repositories.IMediaFileRepository MediaFileRespository
+
+@{
+    var modalId = "video-lighbox-" + Guid.NewGuid().ToString();
+
+    var image = "";
+
+    if ((Model?.Properties?.Image?.FirstOrDefault()?.FileGuid ?? Guid.Empty) != Guid.Empty)
+    {
+        var imageFile = await MediaFileRespository.GetMediaFileAsync(Model.Properties.Image.FirstOrDefault().FileGuid);
+
+        if (imageFile != null)
+        {
+            image = imageFile.MediaFileUrl.RelativePath.Replace("~/", "/");
+        }
+    }
+}
+
+<div class="video-card">
+    <div class="video-card-embed">
+        <div class="video-embed">
+            <a href="#" class="video-embed-btn" aria-label="play this video" data-bs-toggle="modal" data-bs-target='@modalId'>
+                <img class="img-load-lazy" src="@image" data-src="@image" alt="@Model.Properties.ImageAltText" data-srcset="@image" />
+                <img class="play-btn" data-src="/public/library/img/video-cta-play-btn.png" alt="Play video" role="" src="/public/library/img/video-cta-play-btn.png">
+
+            </a>
+
+            <div class="video-embed-content">
+                <div class="video-overlay"></div>
+
+                <div class="video-inner">
+                    <div>
+                        <div class="modal-spinner">
+                            <div class="spinner-border text-light" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="video-frame">
+                            <div>
+                                <button class="close-frame btn btn-primary" aria-label="Close">
+                                    Close
+                                </button>
+                            </div>
+                            <iframe width="444"
+                                    height="245"
+                                    data-src='@Model.Properties.YoutubeUrl'
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen>
+                            </iframe>
+                            <button type="button" class="btn btn-link text-white sr-only" aria-label="Close" data-bs-dismiss="modal">Close Modal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="video-card-body">
+        <h3 class="h5">@Html.Raw(Model.Properties.VideoTitle)</h3>        
+        @if (Context.Kentico().PageBuilder().EditMode)
+        {
+            <div style="border: solid; box-sizing: border-box; padding: 10px; border-color: black; padding-bottom: 20px;">
+                @{ Html.Kentico().RichTextEditor(nameof(Model.Properties.VideoDescription)); }
+            </div>
+        }
+        else
+        {
+            <div class="fr-view">
+                @Html.Raw(Html.Kentico().ResolveRichText(Model.Properties.VideoDescription));
+            </div>
+        }        
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿@using MVC.Models.Widgets.Breadcrumbs
+
+@model ComponentViewModel<MVC.Models.Widgets.Search.SearchProperties>
+
+@{
+    var searchText = Context.Request.Query["searchText"];
+    var categoryId = Context.Request.Query["categoryId"];
+
+    if (string.IsNullOrWhiteSpace(categoryId))
+    {
+        categoryId = "0";
+    }
+
+    var pageNumber = ValidationHelper.GetInteger(Context.Request.Query["pageNumber"], 1);
+    var categoryInt = int.Parse(categoryId);
+    var widgetProperties = new BreadcrumbsProperties();
+}
+
+@await Html.Kentico().RenderStandaloneWidgetAsync("UMCHospital.Widgets.Breadcrumbs", widgetProperties)
+
+
+<vc:site-search page-number="@pageNumber" search-text="@searchText" category-int="@categoryInt" popular-searches="@Model.Properties.PopularSearches"/>

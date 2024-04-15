@@ -1,0 +1,131 @@
+.btn {
+  border-radius: 0px;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  @include font-size(22);
+  @include line-height(25);
+  font-weight: 700;
+  text-decoration: none;
+  color: #fff;
+  white-space: initial;
+  letter-spacing: -0.26px;
+
+  &.wide {
+    padding: 13px 70px;
+  }
+  // Blue Button
+  &.btn-primary {
+    background: $primary;
+    border: 1px solid $white;
+
+    &:hover,
+    &:focus,
+    &.active {
+      background: #fff;
+      color: $primary;
+      border: 1px solid $primary;
+    }
+  }
+  // clear Button with green outline
+  &.btn-secondary {
+    background: $secondary;
+    color: $white;
+    border: none;
+
+    &:hover,
+    &:focus,
+    &.active {
+      background: $primary;
+      color: $white;
+    }
+  }
+  // clear button with blue border (used on gray backgrounds)
+  &.btn-tertiary {
+    background: none;
+    border: 1px solid $secondary;
+    color: $secondary;
+
+    &:hover,
+    &:focus,
+    &.active {
+      background: #81bc41;
+      color: #000;
+    }
+  }
+  // clear button with blue border (used on white backgrounds)
+  &.btn-quaternary {
+    background: #fff;
+    border: 1px solid $primary;
+    color: $primary;
+
+    &:hover,
+    &:focus,
+    &.active {
+      background: $primary;
+      color: #fff;
+    }
+  }
+  &:focus,
+  &:active {
+    box-shadow: none;
+  }
+  &:disabled {
+    background: #969696;
+    color: #fff;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: #969696;
+      color: #fff;
+      cursor: initial;
+      outline: none;
+      border: 1px solid transparent;
+    }
+  }
+}
+button {
+  cursor: pointer;
+}
+.scrollToTop {
+  display: none;
+  position: fixed;
+  right: 15px;
+  top: 80%;
+  cursor: pointer;
+  z-index: $scrollToTop-z-index;
+  color: #fff;
+  font-size: 30px;
+
+  svg {
+    @include svg-format(30px, 20px, #000);
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+.liveChat {
+  position: fixed;
+  right: 0px;
+  top: 50%;
+  cursor: pointer;
+  z-index: $scrollToTop-z-index;
+
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .btn {
+    @include font-size(18);
+    @include line-height(21);
+    padding: 10px 12px;
+  }
+  .scrollToTop {
+    right: 20px;
+  }
+}
